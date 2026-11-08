@@ -1,0 +1,110 @@
+{
+  "request": {
+    "jsonrpc": "2.0",
+    "id": 30,
+    "method": "room.features",
+    "params": {
+      "room_id": "!4f1c2b7a9d0e3f56a8b1c2d3e4f5a6b7:courier.local"
+    }
+  },
+  "response": {
+    "jsonrpc": "2.0",
+    "id": 30,
+    "result": {
+      "reply": true,
+      "thread": false,
+      "reply_is_thread": false,
+      "edit": true,
+      "edit_max_age_ms": 900000,
+      "edit_max_count": 0,
+      "unsend": true,
+      "unsend_max_age_ms": 172800000,
+      "delete_reaches_phone": false,
+      "hide_deleted_placeholder": false,
+      "poll": {
+        "max_options": 12,
+        "option_max_length": 100
+      },
+      "disappearing": {
+        "type": "after_send",
+        "timers_ms": [86400000, 604800000, 7776000000]
+      },
+      "current_timer": {
+        "type": "after_send",
+        "timer_ms": 604800000
+      },
+      "formatting": [
+        "bold",
+        "italic",
+        "strikethrough",
+        "code",
+        "pre",
+        "blockquote",
+        "bullet_list",
+        "ordered_list",
+        "link",
+        "mention"
+      ],
+      "mention_room": false,
+      "max_text_length": 65536,
+      "source": "stored",
+      "can_set_name": false,
+      "can_set_topic": false,
+      "can_set_avatar": false,
+      "can_invite": false,
+      "can_kick": false,
+      "can_set_admin": false,
+      "can_leave": false,
+      "can_delete": false,
+      "delete_leaves_group": false,
+      "image_features": {
+        "supported": true,
+        "mime_types": ["image/gif", "image/jpeg", "image/png"],
+        "caption": true,
+        "max_caption_length": 1024,
+        "max_size": 104857600
+      },
+      "voice_features": {
+        "supported": true,
+        "mime_types": ["audio/ogg; codecs=opus"],
+        "caption": false,
+        "max_size": 104857600,
+        "max_duration_sec": 3600
+      },
+      "file_features": {
+        "supported": true,
+        "mime_types": ["*/*"],
+        "caption": true,
+        "max_size": 104857600
+      },
+      "gif_features": {
+        "supported": true,
+        "mime_types": ["image/gif", "video/mp4"],
+        "caption": true,
+        "max_caption_length": 1024,
+        "max_size": 16777216
+      },
+      "sticker_features": {
+        "supported": true,
+        "mime_types": ["image/png", "image/webp"],
+        "caption": false,
+        "max_size": 16777216
+      },
+      "sticker": {
+        "supported": true,
+        "mime_types": ["image/png", "image/webp"],
+        "captions": false,
+        "max_size": 16777216
+      },
+      "gif": {
+        "supported": true,
+        "mime_types": ["image/gif", "video/mp4"],
+        "captions": true,
+        "max_caption_length": 1024,
+        "max_size": 16777216
+      },
+      "location_supported": true,
+      "link_previews_supported": true
+    }
+  }
+}

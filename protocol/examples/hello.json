@@ -1,0 +1,20 @@
+{
+  "request": {
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "hello",
+    "params": {
+      "protocol": 12,
+      "client": "Courier/0.6.0"
+    }
+  },
+  "response": {
+    "jsonrpc": "2.0",
+    "id": 1,
+    "result": {
+      "protocol": 12,
+      "engine": "0.6.0",
+      "networks": ["whatsapp", "signal", "telegram"]
+    }
+  }
+}
