@@ -19,7 +19,7 @@ import (
 	"github.com/stretchr/testify/require"
 	"go.mau.fi/util/dbutil"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/searchtext"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/searchtext"
 )
 
 // The search fixture: 3 networks, 12 chats (DMs and groups, one in each place), and 200 messages, every one of

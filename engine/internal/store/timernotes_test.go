@@ -14,7 +14,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/sqlite"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/sqlite"
 )
 
 // bridgeNote is a bridge's timer-change note as bridgev2's DisappearingMessageNotice makes it (portal.go:4982–5068):

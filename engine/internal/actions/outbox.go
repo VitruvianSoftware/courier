@@ -12,11 +12,11 @@ import (
 	"github.com/rs/zerolog"
 	"maunium.net/go/mautrix/event"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/engine"
-	"github.com/VitruvianSoftware/courier/engine/internal/entitlement"
-	"github.com/VitruvianSoftware/courier/engine/internal/ids"
-	"github.com/VitruvianSoftware/courier/engine/internal/richtext"
-	"github.com/VitruvianSoftware/courier/engine/internal/store"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/engine"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/entitlement"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/ids"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/richtext"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/store"
 )
 
 // The outbox's actions: held messages (undo send) and scheduled ones (send later). The store keeps them and decides,

@@ -165,14 +165,14 @@ mod tests {
 
     #[test]
     fn store_dirs_secrets_dir_override() {
-        // When COURIER_SECRETS_DIR is set, only that dir is returned.
+        // When VITRUVIAN_COURIER_SECRETS_DIR is set, only that dir is returned.
         let _guard = TestEnvGuard::new();
-        std::env::set_var("COURIER_SECRETS_DIR", "/tmp/test-secrets");
+        std::env::set_var("VITRUVIAN_COURIER_SECRETS_DIR", "/tmp/test-secrets");
         std::env::remove_var("BUILD_WORKSPACE_DIRECTORY");
         let dirs = inject_app_credentials::store_dirs(std::path::Path::new("/nonexistent"));
         assert_eq!(dirs.len(), 1);
         assert_eq!(dirs[0], std::path::PathBuf::from("/tmp/test-secrets"));
-        std::env::remove_var("COURIER_SECRETS_DIR");
+        std::env::remove_var("VITRUVIAN_COURIER_SECRETS_DIR");
     }
 
     // --- engine_contract: protocol version extraction -------------------------
@@ -228,14 +228,14 @@ mod tests {
     #[test]
     fn resolve_app_from_zip_name() {
         // resolve_app looks for .zip extension
-        let _paths = vec!["something".to_string(), "Courier.zip".to_string()];
+        let _paths = vec!["something".to_string(), "VitruvianCourier.zip".to_string()];
         // We cannot actually unzip here, but we can verify the resolution
         // logic finds the .zip path. Since the file doesn't exist, this
         // would fail at unzip; we test the parsing separately.
-        let paths_with_app = vec!["Courier.app".to_string()];
+        let paths_with_app = vec!["Vitruvian Courier.app".to_string()];
         // When a .app dir doesn't exist, resolve_app returns Err.
         let result = app_holds_engine::resolve_app(&paths_with_app);
-        // Courier.app doesn't exist as a dir so this should fail:
+        // Vitruvian Courier.app doesn't exist as a dir so this should fail:
         assert!(result.is_err());
     }
 
@@ -270,12 +270,12 @@ mod tests {
         fn new() -> Self {
             let lock = ENV_LOCK.lock().unwrap_or_else(|e| e.into_inner());
             let keys = [
-                "COURIER_SECRETS_DIR",
+                "VITRUVIAN_COURIER_SECRETS_DIR",
                 "BUILD_WORKSPACE_DIRECTORY",
                 "COURIER_TELEGRAM_API_ID",
                 "COURIER_TELEGRAM_API_HASH",
-                "COURIER_SIGN_IDENTITY",
-                "COURIER_SIGN_FLAGS",
+                "VITRUVIAN_COURIER_SIGN_IDENTITY",
+                "VITRUVIAN_COURIER_SIGN_FLAGS",
                 "PATH",
                 "FAKE_CODESIGN_LOG",
             ];
@@ -303,7 +303,10 @@ mod tests {
         use std::os::unix::fs::PermissionsExt;
 
         let _guard = TestEnvGuard::new();
-        let work = std::env::temp_dir().join(format!("courier_inject_e2e_{}", std::process::id()));
+        let work = std::env::temp_dir().join(format!(
+            "vitruvian_courier_inject_e2e_{}",
+            std::process::id()
+        ));
         let _ = std::fs::remove_dir_all(&work);
         std::fs::create_dir_all(&work).unwrap();
 
@@ -330,13 +333,17 @@ mod tests {
         std::fs::write(&fake_plutil, "#!/bin/sh\nexit 0\n").unwrap();
         std::fs::set_permissions(&fake_plutil, std::fs::Permissions::from_mode(0o755)).unwrap();
 
-        let app_dir = work.join("Courier.app");
+        let app_dir = work.join("Vitruvian Courier.app");
         std::fs::create_dir_all(app_dir.join("Contents/MacOS")).unwrap();
         std::fs::create_dir_all(app_dir.join("Contents/Resources")).unwrap();
         std::fs::create_dir_all(app_dir.join("Contents/Helpers")).unwrap();
-        std::fs::write(app_dir.join("Contents/Helpers/courier-engine"), b"engine").unwrap();
+        std::fs::write(
+            app_dir.join("Contents/Helpers/vitruvian-courier-engine"),
+            b"engine",
+        )
+        .unwrap();
 
-        let ents = work.join("Courier.entitlements");
+        let ents = work.join("VitruvianCourier.entitlements");
         std::fs::write(&ents, "<plist version=\"1.0\"><dict/></plist>").unwrap();
 
         let log_file = work.join("codesign.log");
@@ -345,14 +352,14 @@ mod tests {
         let orig_path = std::env::var("PATH").unwrap_or_default();
         std::env::set_var("PATH", format!("{}:{}", bin_dir.display(), orig_path));
         std::env::set_var("FAKE_CODESIGN_LOG", &log_file);
-        std::env::set_var("COURIER_SECRETS_DIR", work.join("empty-store"));
+        std::env::set_var("VITRUVIAN_COURIER_SECRETS_DIR", work.join("empty-store"));
         std::env::set_var("COURIER_TELEGRAM_API_ID", "4242424");
         std::env::set_var(
             "COURIER_TELEGRAM_API_HASH",
             "0123456789abcdef0123456789abcdef",
         );
-        std::env::remove_var("COURIER_SIGN_IDENTITY");
-        std::env::remove_var("COURIER_SIGN_FLAGS");
+        std::env::remove_var("VITRUVIAN_COURIER_SIGN_IDENTITY");
+        std::env::remove_var("VITRUVIAN_COURIER_SIGN_FLAGS");
 
         let code = inject_app_credentials::run(&[
             "inject-app-credentials".to_string(),
@@ -370,9 +377,9 @@ mod tests {
         let cs_log = std::fs::read_to_string(&log_file).unwrap();
         let sign_lines: Vec<&str> = cs_log.lines().filter(|l| l.contains("--sign")).collect();
         assert_eq!(sign_lines.len(), 2);
-        assert!(sign_lines[0].contains("Contents/Helpers/courier-engine"));
+        assert!(sign_lines[0].contains("Contents/Helpers/vitruvian-courier-engine"));
         assert!(sign_lines[0].contains("--identifier com.vitruviansoftware.courier.engine"));
-        assert!(sign_lines[1].ends_with("Courier.app"));
+        assert!(sign_lines[1].ends_with("Vitruvian Courier.app"));
         assert!(sign_lines[1].contains("--entitlements"));
 
         let _ = std::fs::remove_dir_all(&work);

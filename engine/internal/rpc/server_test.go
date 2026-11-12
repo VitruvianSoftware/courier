@@ -22,16 +22,16 @@ import (
 	"maunium.net/go/mautrix/bridgev2"
 	"maunium.net/go/mautrix/bridgev2/database"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/actions"
-	"github.com/VitruvianSoftware/courier/engine/internal/engine"
-	"github.com/VitruvianSoftware/courier/engine/internal/fakenet"
-	"github.com/VitruvianSoftware/courier/engine/internal/ids"
-	"github.com/VitruvianSoftware/courier/engine/internal/localapi"
-	"github.com/VitruvianSoftware/courier/engine/internal/login"
-	"github.com/VitruvianSoftware/courier/engine/internal/media"
-	"github.com/VitruvianSoftware/courier/engine/internal/search"
-	"github.com/VitruvianSoftware/courier/engine/internal/store"
-	"github.com/VitruvianSoftware/courier/engine/internal/timers"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/actions"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/engine"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/fakenet"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/ids"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/localapi"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/login"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/media"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/search"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/store"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/timers"
 )
 
 // socketPath is a place for a test's socket. A Unix socket path must be short (104 bytes on macOS), and a test's
@@ -711,7 +711,7 @@ func newWorldWaiting(t *testing.T, loginWait time.Duration) *world {
 		}, 5*time.Second, 10*time.Millisecond, "the bridge never stored message %d", i)
 	}
 
-	// As courier-engine does: account titles and muted_by_name read "WhatsApp", not "whatsapp" (Ruling 5).
+	// As vitruvian-courier-engine does: account titles and muted_by_name read "WhatsApp", not "whatsapp" (Ruling 5).
 	names := map[string]string{}
 	for _, n := range testNetworks {
 		names[n.Name] = n.DisplayName
@@ -730,7 +730,7 @@ func newWorldWaiting(t *testing.T, loginWait time.Duration) *world {
 		DataDir:     dir,
 		Notices:     NewNotifier(),
 	}
-	// The local API, as courier-engine wires it: not listening until a test turns it on.
+	// The local API, as vitruvian-courier-engine wires it: not listening until a test turns it on.
 	w.deps.LocalAPI = localapi.New(s, NewDispatcher(w.deps), w.deps.Notices, zerolog.Nop())
 	t.Cleanup(w.deps.LocalAPI.Close)
 	w.path = serve(t, w.deps)

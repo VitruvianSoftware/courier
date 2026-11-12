@@ -1,7 +1,7 @@
 // Copyright 2026 VitruvianSoftware
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-// Package localmatrix lets stock mautrix bridges run with courier's local store in place of a Matrix server.
+// Package localmatrix lets stock mautrix bridges run with Vitruvian Courier's local store in place of a Matrix server.
 package localmatrix
 
 import (
@@ -22,9 +22,9 @@ import (
 	"maunium.net/go/mautrix/event"
 	"maunium.net/go/mautrix/id"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/ids"
-	"github.com/VitruvianSoftware/courier/engine/internal/media"
-	"github.com/VitruvianSoftware/courier/engine/internal/store"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/ids"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/media"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/store"
 )
 
 // Connector is the bridgev2.MatrixConnector for one network. It answers every

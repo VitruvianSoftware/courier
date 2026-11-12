@@ -15,8 +15,8 @@ import (
 
 	"maunium.net/go/mautrix/id"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/ids"
-	"github.com/VitruvianSoftware/courier/engine/internal/media"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/ids"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/media"
 )
 
 type RoomStorageUsage struct {
@@ -198,7 +198,7 @@ func loadStickerCatalog(ms *media.Store) storageStickers {
 }
 
 // StorageUsage walks events, stickers, the media blob store, and the SQLite database files to compute
-// Courier's storage breakdown by category and per room.
+// Vitruvian Courier's storage breakdown by category and per room.
 func (s *Store) StorageUsage(ctx context.Context, dbPath string) (StorageUsage, error) {
 	if dbPath == "" {
 		dbPath = s.dbPath

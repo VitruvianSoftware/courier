@@ -20,8 +20,8 @@ import (
 	"go.mau.fi/util/ffmpeg"
 	"maunium.net/go/mautrix/event"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/ids"
-	"github.com/VitruvianSoftware/courier/engine/internal/richtext"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/ids"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/richtext"
 )
 
 // MaxFileCeiling is the 2 GiB upper bound applied when a streaming bridge (Telegram) advertises a per-kind FileFeatures.MaxSize.
@@ -329,7 +329,7 @@ func resolveFFmpeg(override string) (string, error) {
 }
 
 func transcodeVoice(ctx context.Context, ffmpegBin, inPath, targetExt string) (string, error) {
-	tmp, err := os.CreateTemp("", "courier-voice-*"+targetExt)
+	tmp, err := os.CreateTemp("", "vitruvian-courier-voice-*"+targetExt)
 	if err != nil {
 		return "", err
 	}

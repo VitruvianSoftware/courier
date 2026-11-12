@@ -16,9 +16,9 @@ import (
 
 	"go.mau.fi/util/dbutil"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/ids"
-	"github.com/VitruvianSoftware/courier/engine/internal/media"
-	"github.com/VitruvianSoftware/courier/engine/internal/sqlite"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/ids"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/media"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/sqlite"
 )
 
 //go:embed schema.sql

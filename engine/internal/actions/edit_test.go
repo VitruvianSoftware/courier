@@ -13,9 +13,9 @@ import (
 	"github.com/stretchr/testify/require"
 	"maunium.net/go/mautrix/event"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/ids"
-	"github.com/VitruvianSoftware/courier/engine/internal/richtext"
-	"github.com/VitruvianSoftware/courier/engine/internal/store"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/ids"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/richtext"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/store"
 )
 
 // insertMine stores an event of mine straight into the store (as if sent earlier), returning its ID.

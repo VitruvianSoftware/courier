@@ -13,7 +13,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/sqlite"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/sqlite"
 )
 
 // SeedRoom, SeedPerson and SeedSender are what SeedUnindexed adds besides the messages.

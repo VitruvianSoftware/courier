@@ -26,11 +26,11 @@ import (
 	"maunium.net/go/mautrix/event"
 	"maunium.net/go/mautrix/id"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/fakenet"
-	"github.com/VitruvianSoftware/courier/engine/internal/host"
-	"github.com/VitruvianSoftware/courier/engine/internal/ids"
-	"github.com/VitruvianSoftware/courier/engine/internal/media"
-	"github.com/VitruvianSoftware/courier/engine/internal/store"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/fakenet"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/host"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/ids"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/media"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/store"
 )
 
 func startTwo(t *testing.T) (*Engine, *store.Store, map[string]*fakenet.Network) {

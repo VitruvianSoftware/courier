@@ -13,7 +13,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/gchat"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/gchat"
 )
 
 func TestGChatLinksGChatFFI(t *testing.T) {

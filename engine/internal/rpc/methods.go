@@ -21,13 +21,13 @@ import (
 	"maunium.net/go/mautrix/event"
 	"maunium.net/go/mautrix/id"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/actions"
-	"github.com/VitruvianSoftware/courier/engine/internal/engine"
-	"github.com/VitruvianSoftware/courier/engine/internal/ids"
-	"github.com/VitruvianSoftware/courier/engine/internal/login"
-	"github.com/VitruvianSoftware/courier/engine/internal/logscrub"
-	"github.com/VitruvianSoftware/courier/engine/internal/richtext"
-	"github.com/VitruvianSoftware/courier/engine/internal/store"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/actions"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/engine"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/ids"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/login"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/logscrub"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/richtext"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/store"
 )
 
 // The error codes protocol.json defines.

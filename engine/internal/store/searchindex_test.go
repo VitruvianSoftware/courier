@@ -18,9 +18,9 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/require"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/searchtext"
-	"github.com/VitruvianSoftware/courier/engine/internal/sqlite"
-	"github.com/VitruvianSoftware/courier/engine/internal/store/storetest"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/searchtext"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/sqlite"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/store/storetest"
 )
 
 // matches returns the IDs of the events whose doc matches a raw FTS5 expression, newest first.
@@ -736,11 +736,11 @@ func TestBackfillIndexesTheMilestone4_1Database(t *testing.T) {
 	require.Equal(t, []string{"@ghost3:courier.local"}, peopleMatches(t, s, `"lee"`))
 	require.Equal(t, 3, count(t, s, "SELECT count(*) FROM search_people"))
 
-	// Task 10's by-hand check opens this database in the app: bazel test --test_env=COURIER_KEEP_DB=1 leaves it in
+	// Task 10's by-hand check opens this database in the app: bazel test --test_env=VITRUVIAN_COURIER_KEEP_DB=1 leaves it in
 	// the test's outputs.
-	if os.Getenv("COURIER_KEEP_DB") == "1" {
+	if os.Getenv("VITRUVIAN_COURIER_KEEP_DB") == "1" {
 		out := os.Getenv("TEST_UNDECLARED_OUTPUTS_DIR")
-		require.NotEmpty(t, out, "COURIER_KEEP_DB needs bazel test, which sets TEST_UNDECLARED_OUTPUTS_DIR")
+		require.NotEmpty(t, out, "VITRUVIAN_COURIER_KEEP_DB needs bazel test, which sets TEST_UNDECLARED_OUTPUTS_DIR")
 		_, err := s.db.Exec(context.Background(), "VACUUM INTO $1", filepath.Join(out, "courier.db"))
 		require.NoError(t, err)
 	}

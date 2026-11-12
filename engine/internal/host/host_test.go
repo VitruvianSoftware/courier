@@ -20,10 +20,10 @@ import (
 	"maunium.net/go/mautrix/event"
 	"maunium.net/go/mautrix/id"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/fakenet"
-	"github.com/VitruvianSoftware/courier/engine/internal/media"
-	"github.com/VitruvianSoftware/courier/engine/internal/sqlite"
-	"github.com/VitruvianSoftware/courier/engine/internal/store"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/fakenet"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/media"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/sqlite"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/store"
 )
 
 func TestHostRestartReloadsLogin(t *testing.T) {

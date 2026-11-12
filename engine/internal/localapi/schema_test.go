@@ -20,7 +20,7 @@ import (
 // under plain go test.
 func referenceTools(t *testing.T) map[string]map[string]any {
 	t.Helper()
-	const rel = "apps/desktop/courier/protocol/mcp-tools.json"
+	const rel = "apps/desktop/vitruvian-courier/protocol/mcp-tools.json"
 	var tried []string
 	if srcdir := os.Getenv("TEST_SRCDIR"); srcdir != "" {
 		ws := os.Getenv("TEST_WORKSPACE")
@@ -70,7 +70,7 @@ func listTools(t *testing.T) []*mcp.Tool {
 	return res.Tools
 }
 
-// withoutDescriptions is a schema with every description left out: those are Courier's own.
+// withoutDescriptions is a schema with every description left out: those are Vitruvian Courier's own.
 func withoutDescriptions(v any) any {
 	switch v := v.(type) {
 	case map[string]any:
@@ -122,7 +122,7 @@ func TestToolsMatchReferenceSchemas(t *testing.T) {
 	}
 }
 
-// Descriptions are Courier's own and never name the reference app.
+// Descriptions are Vitruvian Courier's own and never name the reference app.
 func TestNoDescriptionMentionsReferenceApp(t *testing.T) {
 	var check func(path string, v any)
 	check = func(path string, v any) {

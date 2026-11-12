@@ -1,7 +1,7 @@
 // Copyright 2026 VitruvianSoftware
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-//! Which engine each app bundles: the released Courier's engine must hold no seed code (the made-up chats the test
+//! Which engine each app bundles: the released Vitruvian Courier's engine must hold no seed code (the made-up chats the test
 //! copy can open with), and the test copy's must hold it. The seed package's `Marker` constant
 //! (engine/internal/seed/seed.go) is a string only that code holds, so its presence in a binary says the binary links
 //! the seed player.
@@ -26,8 +26,8 @@ pub fn contains(haystack: &[u8], needle: &[u8]) -> bool {
     !needle.is_empty() && haystack.windows(needle.len()).any(|w| w == needle)
 }
 
-/// The arguments: the seed source, then `--release PATH...` (the :Courier rootpaths) and `--test-copy PATH...` (the
-/// :CourierTestCopy rootpaths).
+/// The arguments: the seed source, then `--release PATH...` (the :VitruvianCourier rootpaths) and `--test-copy PATH...` (the
+/// :VitruvianCourierTestCopy rootpaths).
 pub fn split_args(args: &[String]) -> Result<(PathBuf, Vec<String>, Vec<String>), String> {
     let source = args.get(1).ok_or("no seed source given")?;
     let (mut release, mut test_copy) = (Vec::new(), Vec::new());
@@ -83,12 +83,12 @@ fn bundled_engine(paths: &[String], dest: &Path) -> Result<PathBuf, String> {
             .find(|p| p.extension().is_some_and(|e| e == "app"));
     }
     let app = app.ok_or_else(|| format!("no .app in {}", paths.join(" ")))?;
-    let engine = app.join("Contents/Helpers/courier-engine");
+    let engine = app.join("Contents/Helpers/vitruvian-courier-engine");
     if engine.is_file() {
         Ok(engine)
     } else {
         Err(format!(
-            "{} has no Contents/Helpers/courier-engine",
+            "{} has no Contents/Helpers/vitruvian-courier-engine",
             app.display()
         ))
     }
@@ -119,8 +119,12 @@ pub fn run(args: &[String]) -> i32 {
     let tmp = PathBuf::from(env::var("TEST_TMPDIR").unwrap_or_else(|_| "/tmp".to_string()));
     let mut failed = 0;
     for (label, paths, want) in [
-        ("the released app (:Courier)", &release, false),
-        ("the test copy (:CourierTestCopy)", &test_copy, true),
+        ("the released app (:VitruvianCourier)", &release, false),
+        (
+            "the test copy (:VitruvianCourierTestCopy)",
+            &test_copy,
+            true,
+        ),
     ] {
         let dest = tmp.join(if want { "test-copy" } else { "release" });
         let bytes = match bundled_engine(paths, &dest)
@@ -139,14 +143,14 @@ pub fn run(args: &[String]) -> i32 {
             (true, true) => println!("ok: {}'s engine holds the seed player", label),
             (true, false) => {
                 eprintln!(
-                    "FAIL: {}'s engine holds the seed player ({:?}): it must bundle courier-engine, not courier-engine-seeded",
+                    "FAIL: {}'s engine holds the seed player ({:?}): it must bundle vitruvian-courier-engine, not vitruvian-courier-engine-seeded",
                     label, marker
                 );
                 failed = 1;
             }
             (false, true) => {
                 eprintln!(
-                    "FAIL: {}'s engine lacks the seed player ({:?}): it must bundle courier-engine-seeded",
+                    "FAIL: {}'s engine lacks the seed player ({:?}): it must bundle vitruvian-courier-engine-seeded",
                     label, marker
                 );
                 failed = 1;
@@ -162,10 +166,11 @@ mod tests {
 
     #[test]
     fn reads_the_marker_from_the_source() {
-        let src = "package seed\n\n// Marker is ...\nconst Marker = \"courier-seed-player:abc\"\n";
+        let src =
+            "package seed\n\n// Marker is ...\nconst Marker = \"vitruvian-courier-seed-player:abc\"\n";
         assert_eq!(
             marker_from_source(src),
-            Some("courier-seed-player:abc".to_string())
+            Some("vitruvian-courier-seed-player:abc".to_string())
         );
         assert_eq!(marker_from_source("const Other = \"x\""), None);
         assert_eq!(marker_from_source("const Marker = \"\""), None);
@@ -174,12 +179,12 @@ mod tests {
     #[test]
     fn finds_bytes() {
         assert!(contains(
-            b"..\x00courier-seed-player:abc\x00..",
-            b"courier-seed-player:abc"
+            b"..\x00vitruvian-courier-seed-player:abc\x00..",
+            b"vitruvian-courier-seed-player:abc"
         ));
         assert!(!contains(
-            b"courier-seed-player:ab",
-            b"courier-seed-player:abc"
+            b"vitruvian-courier-seed-player:ab",
+            b"vitruvian-courier-seed-player:abc"
         ));
         assert!(!contains(b"anything", b""));
     }

@@ -1,7 +1,7 @@
 // Copyright 2026 VitruvianSoftware
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-// Package engine runs one bridge host per chat network over courier's single local store.
+// Package engine runs one bridge host per chat network over Vitruvian Courier's single local store.
 package engine
 
 import (
@@ -23,12 +23,12 @@ import (
 	"maunium.net/go/mautrix/bridgev2/networkid"
 	"maunium.net/go/mautrix/bridgev2/status"
 
-	enginemod "github.com/VitruvianSoftware/courier/engine"
-	"github.com/VitruvianSoftware/courier/engine/internal/host"
-	"github.com/VitruvianSoftware/courier/engine/internal/ids"
-	"github.com/VitruvianSoftware/courier/engine/internal/localmatrix"
-	"github.com/VitruvianSoftware/courier/engine/internal/media"
-	"github.com/VitruvianSoftware/courier/engine/internal/store"
+	enginemod "github.com/VitruvianSoftware/vitruvian-courier/engine"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/host"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/ids"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/localmatrix"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/media"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/store"
 )
 
 // Spec says how to build and configure one network's bridge.

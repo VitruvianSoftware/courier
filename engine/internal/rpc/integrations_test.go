@@ -18,8 +18,8 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/require"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/localapi"
-	"github.com/VitruvianSoftware/courier/engine/internal/store"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/localapi"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/store"
 )
 
 // integrationsWorld is a store, its local API and the socket server over them, with one greeted app connection.

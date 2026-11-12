@@ -11,9 +11,9 @@ import (
 	"maunium.net/go/mautrix/event"
 	"maunium.net/go/mautrix/id"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/ids"
-	"github.com/VitruvianSoftware/courier/engine/internal/richtext"
-	"github.com/VitruvianSoftware/courier/engine/internal/store"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/ids"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/richtext"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/store"
 )
 
 // stored is the message eventID with whether it is deleted here; an unknown one is store.ErrNotFound.

@@ -21,12 +21,12 @@ import (
 	"maunium.net/go/mautrix/bridgev2"
 	"maunium.net/go/mautrix/bridgev2/networkid"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/actions"
-	"github.com/VitruvianSoftware/courier/engine/internal/engine"
-	"github.com/VitruvianSoftware/courier/engine/internal/fakenet"
-	"github.com/VitruvianSoftware/courier/engine/internal/ids"
-	"github.com/VitruvianSoftware/courier/engine/internal/media"
-	"github.com/VitruvianSoftware/courier/engine/internal/store"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/actions"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/engine"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/fakenet"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/ids"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/media"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/store"
 )
 
 // syncBuffer is a bytes.Buffer the bridge's goroutines can log into while the test reads it.
@@ -128,7 +128,7 @@ func TestBridgeLinesNameNoOne(t *testing.T) {
 	for _, shape := range []*regexp.Regexp{
 		regexp.MustCompile(`\+\d[\d ().-]{5,}\d|\d{6,}|\d{3}[ .-]\d{3}[ .-]\d{4}`), // phone-number-shaped
 		regexp.MustCompile(`[@!#$][^\s"\\]*:courier\.local`),                       // a Matrix user, room or alias
-		regexp.MustCompile(`\$[0-9a-f]{32}`),                                       // a Courier event ID
+		regexp.MustCompile(`\$[0-9a-f]{32}`),                                       // a Vitruvian Courier event ID
 	} {
 		require.Empty(t, shape.FindAllString(out, 5), "the scrubbed log keeps a string shaped like an ID")
 	}
@@ -282,7 +282,7 @@ func TestLogscrubRedactsGoogleChatCookiesTokensGaiaIDsAndWebChannelURLs(t *testi
 
 	rawOut := raw.String()
 	engineLogOut := scrubbed.String()
-	diagnosticsInput := rawOut + "\ncourier-engine: " + gchatErr.Error() + "\npanic: " + gchatErr.Error() + "\n"
+	diagnosticsInput := rawOut + "\nvitruvian-courier-engine: " + gchatErr.Error() + "\npanic: " + gchatErr.Error() + "\n"
 	diagnosticsOut := strings.Join(ScrubStderrExport(diagnosticsInput), "\n")
 
 	for _, secret := range []string{

@@ -13,7 +13,7 @@ import (
 	"maunium.net/go/mautrix/bridgev2/database"
 	"maunium.net/go/mautrix/bridgev2/networkid"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/gchat/pb"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/gchat/pb"
 )
 
 var (

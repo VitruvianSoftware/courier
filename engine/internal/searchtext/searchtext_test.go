@@ -20,7 +20,7 @@ import (
 	"github.com/stretchr/testify/require"
 	"go.mau.fi/util/dbutil"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/sqlite"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/sqlite"
 )
 
 // The tokenizer every search table uses (global constraints, "How the index matches").

@@ -15,9 +15,9 @@ import (
 	"maunium.net/go/mautrix/event"
 	"maunium.net/go/mautrix/id"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/fakenet"
-	"github.com/VitruvianSoftware/courier/engine/internal/ids"
-	"github.com/VitruvianSoftware/courier/engine/internal/store"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/fakenet"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/ids"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/store"
 )
 
 // timerState is the chat's stored com.beeper.disappearing_timer, or "" when none is stored.
@@ -157,7 +157,7 @@ func (w world) nothingReachedTheNetwork(t *testing.T) {
 	require.Empty(t, w.n.Raws())
 }
 
-// Ruling 40: a timer changed in Courier gets a note, as one changed on the phone does from the bridge: exactly one,
+// Ruling 40: a timer changed in Vitruvian Courier gets a note, as one changed on the phone does from the bridge: exactly one,
 // in the bridge's shape, mine, never sent to the network, not unread, and previewed as a timer change.
 func TestTimerChangeMadeHereLeavesOneQuietNote(t *testing.T) {
 	ctx := context.Background()

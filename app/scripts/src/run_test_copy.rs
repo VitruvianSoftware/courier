@@ -1,19 +1,19 @@
 // Copyright 2026 VitruvianSoftware
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-//! Runs the test copy of Courier (`:CourierTestCopy`): a real build, with its own bundle identifier, in its own data
-//! folder, so a change can be tried by hand or by a script without touching the installed Courier, its data in
-//! ~/Library/Application Support/Courier, or its Keychain items.
+//! Runs the test copy of Vitruvian Courier (`:VitruvianCourierTestCopy`): a real build, with its own bundle identifier, in its own data
+//! folder, so a change can be tried by hand or by a script without touching the installed Vitruvian Courier, its data in
+//! ~/Library/Application Support/Vitruvian Courier, or its Keychain items.
 
 use std::env;
 use std::fs;
 use std::path::{Path, PathBuf};
 use std::process::Command;
 
-/// The test copy's bundle identifier, as BUILD and CourierCore's `TestCopy` give it.
+/// The test copy's bundle identifier, as BUILD and VitruvianCourierCore's `TestCopy` give it.
 pub const BUNDLE_ID: &str = "com.vitruviansoftware.courier.dev";
 /// The app's name in the archive.
-pub const APP_NAME: &str = "Courier Test Copy.app";
+pub const APP_NAME: &str = "Vitruvian Courier Test Copy.app";
 
 /// The archive among Bazel's `rootpaths` (the .zip, or a path with a .zip beside it).
 pub fn resolve_archive(candidates: &str) -> Option<PathBuf> {
@@ -31,9 +31,9 @@ pub fn resolve_archive(candidates: &str) -> Option<PathBuf> {
     chosen
 }
 
-/// Whether `data` is the installed Courier's data folder (or inside it), which the test copy must never use.
+/// Whether `data` is the installed Vitruvian Courier's data folder (or inside it), which the test copy must never use.
 pub fn is_installed_apps_data(data: &Path, home: &Path) -> bool {
-    let real = home.join("Library/Application Support/Courier");
+    let real = home.join("Library/Application Support/Vitruvian Courier");
     let normalized =
         |p: &Path| -> PathBuf { fs::canonicalize(p).unwrap_or_else(|_| p.components().collect()) };
     normalized(data).starts_with(normalized(&real))
@@ -62,7 +62,7 @@ pub struct Options {
 }
 
 pub const USAGE: &str =
-    "Usage: run_test_copy <CourierTestCopy.zip> [--scenarios FILE...] [--data DIR] [--seed NAME] [--no-open]";
+    "Usage: run_test_copy <VitruvianCourierTestCopy.zip> [--scenarios FILE...] [--data DIR] [--seed NAME] [--no-open]";
 
 pub fn parse_args(args: &[String]) -> Result<Options, String> {
     if args.len() < 2 {
@@ -154,7 +154,7 @@ pub fn run(args: &[String]) -> i32 {
         }
     };
     let base = PathBuf::from(env::var("TMPDIR").unwrap_or_else(|_| "/tmp".to_string()))
-        .join("courier-test-copy");
+        .join("vitruvian-courier-test-copy");
     let seed_file = match &opts.seed {
         None => None,
         Some(name) => match find_scenario(&opts.scenarios, name) {
@@ -170,13 +170,16 @@ pub fn run(args: &[String]) -> i32 {
     let home = PathBuf::from(env::var("HOME").unwrap_or_default());
     if is_installed_apps_data(&data, &home) {
         eprintln!(
-            "run_test_copy: {} is the installed Courier's data; give the test copy its own",
+            "run_test_copy: {} is the installed Vitruvian Courier's data; give the test copy its own",
             data.display()
         );
         return 2;
     }
     let Some(archive) = resolve_archive(&opts.archive) else {
-        eprintln!("run_test_copy: no CourierTestCopy.zip in {}", opts.archive);
+        eprintln!(
+            "run_test_copy: no VitruvianCourierTestCopy.zip in {}",
+            opts.archive
+        );
         return 2;
     };
 
@@ -228,14 +231,14 @@ pub fn run(args: &[String]) -> i32 {
     let mut open = Command::new("/usr/bin/open");
     open.arg("-n")
         .arg("--env")
-        .arg(format!("COURIER_DATA_DIR={}", data.display()));
+        .arg(format!("VITRUVIAN_COURIER_DATA_DIR={}", data.display()));
     if let Some(file) = &seed_file {
         open.arg("--env")
-            .arg(format!("COURIER_SEED={}", file.display()));
+            .arg(format!("VITRUVIAN_COURIER_SEED={}", file.display()));
     }
     let opened = open.arg(&app).status();
     if opened.map(|s| s.success()).unwrap_or(false) {
-        println!("Opened. Quit it from its menu (Courier Test Copy) when done.");
+        println!("Opened. Quit it from its menu (Vitruvian Courier Test Copy) when done.");
         0
     } else {
         eprintln!("run_test_copy: open failed");
@@ -251,19 +254,19 @@ mod tests {
     fn refuses_the_installed_apps_data() {
         let home = Path::new("/Users/example");
         assert!(is_installed_apps_data(
-            Path::new("/Users/example/Library/Application Support/Courier"),
+            Path::new("/Users/example/Library/Application Support/Vitruvian Courier"),
             home
         ));
         assert!(is_installed_apps_data(
-            Path::new("/Users/example/Library/Application Support/Courier/sub"),
+            Path::new("/Users/example/Library/Application Support/Vitruvian Courier/sub"),
             home
         ));
         assert!(!is_installed_apps_data(
-            Path::new("/Users/example/Library/Application Support/Courier Test Copy"),
+            Path::new("/Users/example/Library/Application Support/Vitruvian Courier Test Copy"),
             home
         ));
         assert!(!is_installed_apps_data(
-            Path::new("/tmp/courier-test-copy/data"),
+            Path::new("/tmp/vitruvian-courier-test-copy/data"),
             home
         ));
     }
@@ -271,8 +274,8 @@ mod tests {
     #[test]
     fn finds_the_archive() {
         assert_eq!(
-            resolve_archive("a/CourierTestCopy.zip"),
-            Some(PathBuf::from("a/CourierTestCopy.zip"))
+            resolve_archive("a/VitruvianCourierTestCopy.zip"),
+            Some(PathBuf::from("a/VitruvianCourierTestCopy.zip"))
         );
         assert_eq!(resolve_archive("nothing-here"), None);
     }
@@ -290,7 +293,7 @@ mod tests {
     fn parses_bazels_arguments_then_the_persons() {
         let got = parse_args(&args(&[
             "run_test_copy",
-            "x/CourierTestCopy.zip",
+            "x/VitruvianCourierTestCopy.zip",
             "--scenarios",
             "s/direct.json",
             "s/group-threads.json",
@@ -302,7 +305,7 @@ mod tests {
         assert_eq!(
             got,
             Options {
-                archive: "x/CourierTestCopy.zip".to_string(),
+                archive: "x/VitruvianCourierTestCopy.zip".to_string(),
                 scenarios: vec![
                     PathBuf::from("s/direct.json"),
                     PathBuf::from("s/group-threads.json")
@@ -343,10 +346,13 @@ mod tests {
 
     #[test]
     fn a_seed_gets_its_own_fresh_folder_unless_data_is_given() {
-        let base = Path::new("/t/courier-test-copy");
+        let base = Path::new("/t/vitruvian-courier-test-copy");
         assert_eq!(
             data_dir(base, None, Some("direct")),
-            (PathBuf::from("/t/courier-test-copy/seed-direct"), true)
+            (
+                PathBuf::from("/t/vitruvian-courier-test-copy/seed-direct"),
+                true
+            )
         );
         assert_eq!(
             data_dir(base, Some(Path::new("/d")), Some("direct")),
@@ -354,7 +360,7 @@ mod tests {
         );
         assert_eq!(
             data_dir(base, None, None),
-            (PathBuf::from("/t/courier-test-copy/data"), false)
+            (PathBuf::from("/t/vitruvian-courier-test-copy/data"), false)
         );
     }
 

@@ -7,7 +7,7 @@ import (
 	"bytes"
 	"context"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/store"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/store"
 )
 
 // RoomWith waits until s holds a chat with a message whose content has text in it, and returns that chat: how a

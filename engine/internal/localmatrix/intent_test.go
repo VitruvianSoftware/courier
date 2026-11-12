@@ -24,11 +24,11 @@ import (
 	"maunium.net/go/mautrix/event"
 	"maunium.net/go/mautrix/id"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/fakenet"
-	"github.com/VitruvianSoftware/courier/engine/internal/ids"
-	"github.com/VitruvianSoftware/courier/engine/internal/media"
-	"github.com/VitruvianSoftware/courier/engine/internal/sqlite"
-	"github.com/VitruvianSoftware/courier/engine/internal/store"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/fakenet"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/ids"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/media"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/sqlite"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/store"
 )
 
 func newTestConnector(t *testing.T) *Connector {
@@ -598,7 +598,7 @@ func TestNetworkArchiveTagBecomesArchived(t *testing.T) {
 	room := b.arrive(t, "archived")
 	row := rowOf(t, b.c, room)
 	require.True(t, row.Archived, "a network's low priority is what it shows as archived")
-	require.False(t, row.LowPriority, "it is Courier's archive, not Courier's low priority")
+	require.False(t, row.LowPriority, "it is Vitruvian Courier's archive, not Vitruvian Courier's low priority")
 	require.True(t, row.PinnedAt.IsZero())
 }
 
@@ -800,7 +800,7 @@ func TestFeaturesChangePublishesRoom(t *testing.T) {
 	}
 }
 
-// A call notice from the bridge is stored with Courier's reading of it, by the connector's network: Signal's
+// A call notice from the bridge is stored with Vitruvian Courier's reading of it, by the connector's network: Signal's
 // "Call ended" (which comes with no action message) becomes a call note, and the same words on WhatsApp's connector
 // stay a message.
 func TestSendMessageReadsACallNoticeByItsNetwork(t *testing.T) {
@@ -915,7 +915,7 @@ func TestOthersReceiptsAreKeptAndMineStillMoveMyMarker(t *testing.T) {
 	require.Equal(t, 0, unreadOf(t, c, roomID))
 	require.Equal(t, []string{friendID}, readerIDs(receiptsOf(t, c, roomID, second)))
 
-	// A receipt for a message Courier doesn't have is dropped without error.
+	// A receipt for a message Vitruvian Courier doesn't have is dropped without error.
 	require.NoError(t, friend.MarkRead(ctx, roomID, "$not-here", time.Unix(80, 0)))
 	require.Equal(t, []string{friendID}, readerIDs(receiptsOf(t, c, roomID, second)))
 }

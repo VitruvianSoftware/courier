@@ -39,13 +39,13 @@ import (
 	"maunium.net/go/mautrix/event"
 	"maunium.net/go/mautrix/id"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/engine"
-	"github.com/VitruvianSoftware/courier/engine/internal/entitlement"
-	"github.com/VitruvianSoftware/courier/engine/internal/host"
-	"github.com/VitruvianSoftware/courier/engine/internal/ids"
-	"github.com/VitruvianSoftware/courier/engine/internal/media"
-	"github.com/VitruvianSoftware/courier/engine/internal/richtext"
-	"github.com/VitruvianSoftware/courier/engine/internal/store"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/engine"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/entitlement"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/host"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/ids"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/media"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/richtext"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/store"
 )
 
 // MaxFileBytes is the largest file SendFile accepts: 90 MB.
@@ -84,7 +84,7 @@ var (
 	ErrBadValue = store.ErrBadValue
 	// ErrNotEntitled means the plan doesn't include the feature (undo send, send later). Nothing was stored.
 	ErrNotEntitled = errors.New("the plan doesn't include that")
-	// ErrNetworkRefused means the network answered no to a change Courier waits on (a disappearing timer), so
+	// ErrNetworkRefused means the network answered no to a change Vitruvian Courier waits on (a disappearing timer), so
 	// nothing changed here. It wraps the bridge's own reason when there is one.
 	ErrNetworkRefused = errors.New("the network refused the change")
 	// ErrUnsupportedFeature aliases ErrNotSupported for callers checking room capability support.

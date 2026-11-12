@@ -18,12 +18,12 @@ import (
 	"maunium.net/go/mautrix/bridgev2/database"
 	"maunium.net/go/mautrix/bridgev2/networkid"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/actions"
-	"github.com/VitruvianSoftware/courier/engine/internal/engine"
-	"github.com/VitruvianSoftware/courier/engine/internal/fakenet"
-	"github.com/VitruvianSoftware/courier/engine/internal/ids"
-	"github.com/VitruvianSoftware/courier/engine/internal/login"
-	"github.com/VitruvianSoftware/courier/engine/internal/store"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/actions"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/engine"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/fakenet"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/ids"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/login"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/store"
 )
 
 // Protocol 5's presence: receipts and deliveries on my messages, typing, waiting sends, a private chat from a group,
@@ -600,7 +600,7 @@ func TestWaitingInAChatWithNoAccountSaysSo(t *testing.T) {
 }
 
 // room.setTyping reaches the chat's network while it is connected and is nothing (and no error) while it is down;
-// room.setUnreadFrom makes the count run from the message; room.directChat finds Courier's own one-to-one chat.
+// room.setUnreadFrom makes the count run from the message; room.directChat finds Vitruvian Courier's own one-to-one chat.
 func TestPresenceMethodsOverTheSocket(t *testing.T) {
 	w := newWorld(t)
 	c := dial(t, w.path)

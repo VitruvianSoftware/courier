@@ -5,7 +5,7 @@ package localapi
 
 // toolDef is one tool as tools/list shows it. Its name and input schema (property names, types, enums, formats,
 // required) match protocol/mcp-tools.json exactly (TestToolsMatchReferenceSchemas), based on the reference
-// app plus Courier's send_file. The descriptions are Courier's own.
+// app plus Vitruvian Courier's send_file. The descriptions are Vitruvian Courier's own.
 type toolDef struct {
 	name        string
 	description string
@@ -13,12 +13,12 @@ type toolDef struct {
 }
 
 // SearchDocsText is search_docs's one answer.
-const SearchDocsText = "Courier has no documentation search. Each tool's description is its documentation."
+const SearchDocsText = "Vitruvian Courier has no documentation search. Each tool's description is its documentation."
 
 var toolDefs = []toolDef{
 	{
 		name: "get_accounts",
-		description: "List the chat accounts signed in to Courier on this Mac: one entry per account, with its " +
+		description: "List the chat accounts signed in to Vitruvian Courier on this Mac: one entry per account, with its " +
 			"accountID, its network, the name the network gives it and whether it is connected.",
 		schema: `{"type":"object","properties":{},"required":[]}`,
 	},
@@ -96,7 +96,7 @@ var toolDefs = []toolDef{
 		name: "send_message",
 		description: "Send a text message to a chat, through the chat's own account. Markdown (bold, italic, " +
 			"strikethrough, code, links) is sent as formatting. Only works when this connection has been allowed " +
-			"to send messages in Courier's settings.",
+			"to send messages in Vitruvian Courier's settings.",
 		schema: `{"type":"object","properties":{
   "chatID":{"type":"string","description":"The chat to send to."},
   "replyToMessageID":{"type":"string","description":"A message in the chat to reply to."},
@@ -106,7 +106,7 @@ var toolDefs = []toolDef{
 	{
 		name: "send_file",
 		description: "Send a file (such as an image, video, audio or document) to a chat, through the chat's own " +
-			"account. Only works when this connection has been allowed to send messages in Courier's settings.",
+			"account. Only works when this connection has been allowed to send messages in Vitruvian Courier's settings.",
 		schema: `{"type":"object","properties":{
   "chatID":{"type":"string","description":"The chat to send to."},
   "filePath":{"type":"string","description":"The absolute path of the file on this Mac to send."},
@@ -141,7 +141,7 @@ var toolDefs = []toolDef{
 	},
 	{
 		name: "focus_app",
-		description: "Bring Courier to the front, optionally opening a chat at a message, with a draft (text and " +
+		description: "Bring Vitruvian Courier to the front, optionally opening a chat at a message, with a draft (text and " +
 			"an attachment) put in its message box but not sent.",
 		schema: `{"type":"object","properties":{
   "chatID":{"type":"string","description":"The chat to open."},
@@ -152,7 +152,7 @@ var toolDefs = []toolDef{
 	},
 	{
 		name:        "search_docs",
-		description: "Courier has no documentation to search: each tool's description is its documentation.",
+		description: "Vitruvian Courier has no documentation to search: each tool's description is its documentation.",
 		schema: `{"type":"object","properties":{
   "language":{"type":"string","enum":["http","python","go","typescript","terraform","ruby","java","kotlin"],"description":"Ignored."},
   "query":{"type":"string","description":"Ignored."}

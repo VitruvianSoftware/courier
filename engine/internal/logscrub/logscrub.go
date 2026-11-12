@@ -55,7 +55,7 @@ var allowed = map[string]bool{
 	"bridge_evt_type": true, // a bridgev2 remote event type: "RemoteEventMessage"
 	"method":          true, // the engine's protocol method ("room.events"), an HTTP method, a connector's step
 	"status":          true, // a message status ("fail"), a network's message status enum
-	// The engine's own (cmd/courier-engine, rpc, actions, timers, search, store, host, engine).
+	// The engine's own (cmd/vitruvian-courier-engine, rpc, actions, timers, search, store, host, engine).
 	"change":           true, // a chat change's kind: "pin", "mute", "read", "accept", "typing"
 	"waited":           true, // shutdown's bounded waits
 	"retry_in":         true, // search backfill

@@ -21,11 +21,11 @@ import (
 	"maunium.net/go/mautrix/bridgev2"
 	"maunium.net/go/mautrix/event"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/engine"
-	"github.com/VitruvianSoftware/courier/engine/internal/fakenet"
-	"github.com/VitruvianSoftware/courier/engine/internal/ids"
-	"github.com/VitruvianSoftware/courier/engine/internal/media"
-	"github.com/VitruvianSoftware/courier/engine/internal/store"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/engine"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/fakenet"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/ids"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/media"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/store"
 )
 
 // world is an engine running the fake network under some network's name, over a real store.
@@ -958,7 +958,7 @@ func TestChatChangesGoThroughTheChatsOwnLogin(t *testing.T) {
 	require.Equal(t, fakenet.TagChange{PortalID: "chatA", Tags: []event.RoomTag{event.RoomTagFavourite}}, recv(t, w.n.Tags, "A's pin"))
 	none(t, w.n.Tags, "B's pin")
 
-	// B's pin is Courier's own, not kept for when B is next told anything.
+	// B's pin is Vitruvian Courier's own, not kept for when B is next told anything.
 	for key := range w.a.untold.take("fake") {
 		require.NotEqual(t, roomB, key.room, "B's pin was kept for the network: %+v", key)
 	}

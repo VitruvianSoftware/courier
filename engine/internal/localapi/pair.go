@@ -14,7 +14,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/store"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/store"
 )
 
 // Pairing lets a client ask for a token instead of the person pasting one: POST /v0/pair {"clientName": "..."}.

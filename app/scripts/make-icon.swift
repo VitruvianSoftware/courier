@@ -1,10 +1,10 @@
 // Copyright 2026 VitruvianSoftware
 // SPDX-License-Identifier: AGPL-3.0-or-later
 //
-// Draws Courier's app icon and writes Resources/AppIcon.icns. Original artwork, drawn here with CoreGraphics:
+// Draws Vitruvian Courier's app icon and writes Resources/AppIcon.icns. Original artwork, drawn here with CoreGraphics:
 // a speech bubble carrying a forward arrow, on a blue-to-teal tile. No other app's name, icon or asset.
 //
-//   swift apps/desktop/courier/app/scripts/make-icon.swift apps/desktop/courier/app/Resources/AppIcon.icns
+//   swift apps/desktop/vitruvian-courier/app/scripts/make-icon.swift apps/desktop/vitruvian-courier/app/Resources/AppIcon.icns
 //
 // The .icns is checked in; run this again only to change the artwork.
 
@@ -75,7 +75,7 @@ func draw(size: Int) -> Data {
     return NSBitmapImageRep(cgImage: image).representation(using: .png, properties: [:])!
 }
 
-let iconset = FileManager.default.temporaryDirectory.appendingPathComponent("Courier-\(UUID().uuidString).iconset")
+let iconset = FileManager.default.temporaryDirectory.appendingPathComponent("VitruvianCourier-\(UUID().uuidString).iconset")
 try FileManager.default.createDirectory(at: iconset, withIntermediateDirectories: true)
 defer { try? FileManager.default.removeItem(at: iconset) }
 for points in [16, 32, 128, 256, 512] {

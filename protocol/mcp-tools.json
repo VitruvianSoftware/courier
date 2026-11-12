@@ -1,5 +1,5 @@
 {
-  "_comment": "Tool names and input schemas of the reference MCP server, captured 2026-11-01 from the running reference app (descriptions dropped), plus Courier's send_file tool; see engine/internal/localapi.",
+  "_comment": "Tool names and input schemas of the reference MCP server, captured 2026-11-01 from the running reference app (descriptions dropped), plus Vitruvian Courier's send_file tool; see engine/internal/localapi.",
   "tools": [
     {
       "inputSchema": {

@@ -17,7 +17,7 @@ func TestLockIsExclusive(t *testing.T) {
 	_, err = Lock(dir)
 	require.Error(t, err, "a second instance on the same data dir must be refused")
 	require.ErrorIs(t, err, ErrLocked)
-	require.EqualError(t, err, "another Courier engine is using "+dir)
+	require.EqualError(t, err, "another Vitruvian Courier engine is using "+dir)
 
 	release()
 	release2, err := Lock(dir)

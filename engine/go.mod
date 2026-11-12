@@ -1,4 +1,4 @@
-module github.com/VitruvianSoftware/courier/engine
+module github.com/VitruvianSoftware/vitruvian-courier/engine
 
 go 1.26.10
 

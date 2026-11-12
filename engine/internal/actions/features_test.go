@@ -16,10 +16,10 @@ import (
 	"maunium.net/go/mautrix/event"
 	"maunium.net/go/mautrix/id"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/fakenet"
-	"github.com/VitruvianSoftware/courier/engine/internal/ids"
-	"github.com/VitruvianSoftware/courier/engine/internal/richtext"
-	"github.com/VitruvianSoftware/courier/engine/internal/store"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/fakenet"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/ids"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/richtext"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/store"
 )
 
 func seconds(d time.Duration) *jsontime.Seconds { s := jsontime.S(d); return &s }
@@ -39,7 +39,7 @@ func TestFeaturesOfMapsEveryField(t *testing.T) {
 			event.FmtUserLink:      event.CapLevelFullySupported,
 			event.FmtSpoiler:       event.CapLevelFullySupported,
 			event.FmtAtRoomMention: event.CapLevelFullySupported,
-			event.FmtHeaders:       event.CapLevelFullySupported, // no kind of Courier's: ignored
+			event.FmtHeaders:       event.CapLevelFullySupported, // no kind of Vitruvian Courier's: ignored
 		},
 		MaxTextLength:       4000,
 		Poll:                event.CapLevelFullySupported,
@@ -100,7 +100,7 @@ func TestFeaturesOfMapsEveryField(t *testing.T) {
 	// A poll needs the option limit the bridge advertises.
 	require.Nil(t, FeaturesOf(&event.RoomFeatures{Poll: event.CapLevelFullySupported}).Poll)
 
-	// After-read timers with no list are Signal's: Courier offers SignalTimers.
+	// After-read timers with no list are Signal's: Vitruvian Courier offers SignalTimers.
 	signal := FeaturesOf(&event.RoomFeatures{DisappearingTimer: &event.DisappearingTimerCapability{
 		Types: []event.DisappearingType{event.DisappearingTypeAfterRead},
 	}})

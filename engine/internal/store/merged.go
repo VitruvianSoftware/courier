@@ -14,7 +14,7 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/ids"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/ids"
 )
 
 // MergedChat is a virtual chat combining two or more 1:1 rooms across networks into one timeline.

@@ -16,9 +16,9 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/actions"
-	"github.com/VitruvianSoftware/courier/engine/internal/ids"
-	"github.com/VitruvianSoftware/courier/engine/internal/store"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/actions"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/ids"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/store"
 )
 
 // myUserID is my Matrix ID as the store keeps senders, for code where the ids package name is taken.

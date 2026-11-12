@@ -19,9 +19,9 @@ import (
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/ids"
-	"github.com/VitruvianSoftware/courier/engine/internal/searchtext"
-	"github.com/VitruvianSoftware/courier/engine/internal/store"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/ids"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/searchtext"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/store"
 )
 
 // The engine's protocol codes the tools put in their own words (protocol.json's errors).
@@ -72,22 +72,22 @@ func plain(err error) string {
 		case codeNotFound:
 			return "No chat or message with that ID."
 		case codePinned:
-			return "A pinned chat can't be archived. Unpin it in Courier first."
+			return "A pinned chat can't be archived. Unpin it in Vitruvian Courier first."
 		case codeInvalidParams:
 			if r := c.Reason(); r != "" {
 				return "That isn't accepted: " + r + "."
 			}
 			return "That isn't accepted."
 		case codeInternal:
-			return "Courier couldn't do that (an internal error)."
+			return "Vitruvian Courier couldn't do that (an internal error)."
 		}
 		msg := c.Error()
 		if msg == "" {
-			return "Courier couldn't do that."
+			return "Vitruvian Courier couldn't do that."
 		}
 		return strings.ToUpper(msg[:1]) + msg[1:] + "."
 	}
-	return "Courier couldn't do that (an internal error)."
+	return "Vitruvian Courier couldn't do that (an internal error)."
 }
 
 type toolFunc func(ctx context.Context, req *mcp.CallToolRequest, args json.RawMessage) (any, error)
@@ -127,7 +127,7 @@ func (s *Server) wrap(name string, f toolFunc) mcp.ToolHandler {
 		defer func() {
 			if r := recover(); r != nil {
 				outcome = "panic"
-				res = errorResult("Courier couldn't do that (an internal error).")
+				res = errorResult("Vitruvian Courier couldn't do that (an internal error).")
 			}
 			ev := s.log.Info()
 			if outcome == "panic" {
@@ -150,7 +150,7 @@ func (s *Server) wrap(name string, f toolFunc) mcp.ToolHandler {
 		b, err := json.Marshal(out)
 		if err != nil {
 			outcome = "tool_error"
-			return errorResult("Courier couldn't do that (an internal error)."), nil
+			return errorResult("Vitruvian Courier couldn't do that (an internal error)."), nil
 		}
 		return &mcp.CallToolResult{Content: []mcp.Content{&mcp.TextContent{Text: string(b)}}}, nil
 	}
@@ -239,7 +239,7 @@ func parseCursor(v *string) (*pageCursor, error) {
 	b, err := base64.RawURLEncoding.DecodeString(strings.TrimRight(*v, "="))
 	var c pageCursor
 	if err != nil || json.Unmarshal(b, &c) != nil || c.T < 0 || c.ID == "" {
-		return nil, fail("That cursor isn't one Courier handed out.")
+		return nil, fail("That cursor isn't one Vitruvian Courier handed out.")
 	}
 	return &c, nil
 }
@@ -509,7 +509,7 @@ type messageContent struct {
 }
 
 // isMessage is whether an event is something a person would call a message: a message, a sticker or a poll, but
-// not an edit, a reaction, a deletion or something Courier can't read.
+// not an edit, a reaction, a deletion or something Vitruvian Courier can't read.
 func isMessage(typ string, content json.RawMessage) bool {
 	switch typ {
 	case msgType, stickerType, pollStartType:
@@ -932,7 +932,7 @@ func (s *Server) cursorPosition(ctx context.Context, c *pageCursor) (position, e
 	}
 	e, ok, err := s.store.GetEvent(ctx, c.ID)
 	if err != nil || !ok {
-		return position{}, fail("That cursor isn't one Courier handed out.")
+		return position{}, fail("That cursor isn't one Vitruvian Courier handed out.")
 	}
 	return position{c.T, e.Seq}, nil
 }
@@ -1083,7 +1083,7 @@ func (s *Server) searchMessages(ctx context.Context, _ *mcp.CallToolRequest, raw
 		return nil, err
 	}
 	if a.Query == nil || strings.TrimSpace(*a.Query) == "" {
-		return nil, fail("query is required: Courier searches messages by their words. To read a chat's latest messages, use list_messages.")
+		return nil, fail("query is required: Vitruvian Courier searches messages by their words. To read a chat's latest messages, use list_messages.")
 	}
 	f, err := s.findMessages(ctx, a)
 	if err != nil {
@@ -1387,7 +1387,7 @@ func canSend(req *mcp.CallToolRequest) bool {
 
 func (s *Server) sendMessage(ctx context.Context, req *mcp.CallToolRequest, raw json.RawMessage) (any, error) {
 	if !canSend(req) {
-		return nil, fail("This connection isn't allowed to send messages. Turn on \"Can send messages\" for it in Courier's Settings → Integrations.")
+		return nil, fail("This connection isn't allowed to send messages. Turn on \"Can send messages\" for it in Vitruvian Courier's Settings → Integrations.")
 	}
 	var a struct {
 		ChatID           *string `json:"chatID"`
@@ -1422,7 +1422,7 @@ func (s *Server) sendMessage(ctx context.Context, req *mcp.CallToolRequest, raw 
 
 func (s *Server) sendFile(ctx context.Context, req *mcp.CallToolRequest, raw json.RawMessage) (any, error) {
 	if !canSend(req) {
-		return nil, fail("This connection isn't allowed to send messages. Turn on \"Can send messages\" for it in Courier's Settings → Integrations.")
+		return nil, fail("This connection isn't allowed to send messages. Turn on \"Can send messages\" for it in Vitruvian Courier's Settings → Integrations.")
 	}
 	var a struct {
 		ChatID           *string `json:"chatID"`
@@ -1473,7 +1473,7 @@ func (s *Server) sendFile(ctx context.Context, req *mcp.CallToolRequest, raw jso
 }
 
 // sendFileError is send_file's one answer for a file it won't take, whatever is wrong with it.
-const sendFileError = "Courier can't send that file."
+const sendFileError = "Vitruvian Courier can't send that file."
 
 func (s *Server) archiveChat(ctx context.Context, _ *mcp.CallToolRequest, raw json.RawMessage) (any, error) {
 	var a struct {
@@ -1592,18 +1592,18 @@ func (s *Server) focusApp(ctx context.Context, req *mcp.CallToolRequest, raw jso
 		return nil, fail("draftText and draftAttachmentPath need a chatID: a draft belongs to a chat.")
 	}
 	if s.pub == nil || s.pub.Listeners() == 0 {
-		return nil, fail("Courier's window isn't open to bring forward.")
+		return nil, fail("Vitruvian Courier's window isn't open to bring forward.")
 	}
 	// Locked, the app shows only its lock screen: no chat opens and no draft goes in, so nothing is sent to it.
 	if s.appLocked.Load() {
 		if p.ChatID != "" {
-			return nil, fail("Courier is locked. Unlock it to open the chat.")
+			return nil, fail("Vitruvian Courier is locked. Unlock it to open the chat.")
 		}
-		return nil, fail("Courier is locked. Unlock it first.")
+		return nil, fail("Vitruvian Courier is locked. Unlock it first.")
 	}
 	if attach {
 		if !canSend(req) {
-			return nil, fail("Attaching a file needs permission to send messages. Turn on \"Can send messages\" for this connection in Courier's Settings → Integrations.")
+			return nil, fail("Attaching a file needs permission to send messages. Turn on \"Can send messages\" for this connection in Vitruvian Courier's Settings → Integrations.")
 		}
 		path, ok := readableFile(*a.DraftAttachmentPath)
 		if !ok {
@@ -1612,13 +1612,13 @@ func (s *Server) focusApp(ctx context.Context, req *mcp.CallToolRequest, raw jso
 		p.DraftAttachmentPath = path
 	}
 	if s.pub.Publish("app.focus", p) == 0 {
-		return nil, fail("Courier's window isn't open to bring forward.")
+		return nil, fail("Vitruvian Courier's window isn't open to bring forward.")
 	}
 	return map[string]any{"focused": true, "chatID": p.ChatID, "messageID": p.MessageID}, nil
 }
 
 // fileError is focus_app's one answer for an attachment it won't take, whatever is wrong with it.
-const fileError = "Courier can't attach that file."
+const fileError = "Vitruvian Courier can't attach that file."
 
 // readableFile is path, cleaned, and whether it is an absolute path to a regular file this engine can read.
 func readableFile(path string) (string, bool) {

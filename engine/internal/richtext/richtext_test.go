@@ -24,11 +24,11 @@ type sharedCase struct {
 	Body     string   `json:"body"`
 }
 
-// casesPath finds apps/desktop/courier/protocol/richtext/cases.json: in the test's runfiles under Bazel, and by
+// casesPath finds apps/desktop/vitruvian-courier/protocol/richtext/cases.json: in the test's runfiles under Bazel, and by
 // its place in the source tree otherwise.
 func casesPath(t testing.TB) string {
 	t.Helper()
-	const rel = "apps/desktop/courier/protocol/richtext/cases.json"
+	const rel = "apps/desktop/vitruvian-courier/protocol/richtext/cases.json"
 	var tried []string
 	if srcdir := os.Getenv("TEST_SRCDIR"); srcdir != "" {
 		ws := os.Getenv("TEST_WORKSPACE")

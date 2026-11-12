@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 	"maunium.net/go/mautrix/event"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/fakenet"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/fakenet"
 )
 
 func TestCreatePollValidates(t *testing.T) {

@@ -20,17 +20,17 @@ import (
 	"go.mau.fi/util/jsontime"
 	"maunium.net/go/mautrix/event"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/actions"
-	"github.com/VitruvianSoftware/courier/engine/internal/engine"
-	"github.com/VitruvianSoftware/courier/engine/internal/ids"
-	"github.com/VitruvianSoftware/courier/engine/internal/richtext"
-	"github.com/VitruvianSoftware/courier/engine/internal/store"
-	"github.com/VitruvianSoftware/courier/engine/internal/timers"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/actions"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/engine"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/ids"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/richtext"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/store"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/timers"
 )
 
 const contact = "@whatsapp_contact:courier.local"
 
-// everything is a chat that can do all Courier offers, as WhatsApp's features read with a thread and Slack's @room.
+// everything is a chat that can do all Vitruvian Courier offers, as WhatsApp's features read with a thread and Slack's @room.
 func everything() *event.RoomFeatures {
 	full := event.CapLevelFullySupported
 	return &event.RoomFeatures{

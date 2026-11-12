@@ -21,9 +21,9 @@ import (
 
 	"maunium.net/go/mautrix/bridgev2"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/engine"
-	"github.com/VitruvianSoftware/courier/engine/internal/host"
-	"github.com/VitruvianSoftware/courier/engine/internal/store"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/engine"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/host"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/store"
 )
 
 var (

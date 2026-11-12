@@ -19,11 +19,11 @@ import (
 	"maunium.net/go/mautrix/bridgev2"
 	"maunium.net/go/mautrix/bridgev2/networkid"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/engine"
-	"github.com/VitruvianSoftware/courier/engine/internal/fakenet"
-	"github.com/VitruvianSoftware/courier/engine/internal/ids"
-	"github.com/VitruvianSoftware/courier/engine/internal/logscrub"
-	"github.com/VitruvianSoftware/courier/engine/internal/store"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/engine"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/fakenet"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/ids"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/logscrub"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/store"
 )
 
 // messageWith waits for the bridge to store a message with body in it, and returns it.
@@ -117,7 +117,7 @@ func TestUnreadFromIsNeverSent(t *testing.T) {
 	none(t, w.n.Unreads, "an unread mark")
 }
 
-// Reply Privately answers Courier's own one-to-one chat with the person first, without the network: on the group's
+// Reply Privately answers Vitruvian Courier's own one-to-one chat with the person first, without the network: on the group's
 // login, even while it is down. A group every account shares looks under the login actually in it (C15), never "".
 func TestDirectChatFindsCourierOwnChatFirst(t *testing.T) {
 	ctx := context.Background()
@@ -263,7 +263,7 @@ func TestDirectChatRefusalsNameTheReason(t *testing.T) {
 func TestDirectChatNeverLogsWho(t *testing.T) {
 	ctx := context.Background()
 	logs := &syncBuffer{}
-	// The engine's logger, as cmd/courier-engine makes it, but at debug: through the log writer.
+	// The engine's logger, as cmd/vitruvian-courier-engine makes it, but at debug: through the log writer.
 	w, group := directWorld(t, fakenet.ViaGhost, zerolog.New(logscrub.New(logs)).Level(zerolog.DebugLevel))
 	alice := w.ghost(t, "alice-q7")
 

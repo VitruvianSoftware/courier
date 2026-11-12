@@ -16,8 +16,8 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/localapi"
-	"github.com/VitruvianSoftware/courier/engine/internal/store"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/localapi"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/store"
 )
 
 type chatOut struct {
@@ -457,7 +457,7 @@ func TestSendFileBadFileErrorsAndOrdering(t *testing.T) {
 	}
 	for _, path := range bad {
 		msg := fails(t, sess, "send_file", map[string]any{"chatID": w.room, "filePath": path})
-		require.Equal(t, "Courier can't send that file.", msg, path)
+		require.Equal(t, "Vitruvian Courier can't send that file.", msg, path)
 	}
 	select {
 	case f := <-w.wa.Files:
@@ -526,7 +526,7 @@ func TestFocusApp(t *testing.T) {
 	}
 	for _, path := range bad {
 		msg := fails(t, sess, "focus_app", map[string]any{"chatID": w.room, "draftText": "hi", "draftAttachmentPath": path})
-		require.Equal(t, "Courier can't attach that file.", msg, path)
+		require.Equal(t, "Vitruvian Courier can't attach that file.", msg, path)
 	}
 	require.Contains(t, fails(t, sess, "focus_app", map[string]any{"draftText": "hi"}), "need a chatID")
 	require.Empty(t, w.pub.all(), "nothing reached the app")
@@ -558,7 +558,7 @@ func TestFocusAppChecksEverythingElseBeforeTheFile(t *testing.T) {
 	w.pub.setNobody(true)
 	require.Contains(t, fails(t, sess, "focus_app", map[string]any{"chatID": w.room, "draftAttachmentPath": missing}), "isn't open")
 	w.pub.setNobody(false)
-	require.Equal(t, "Courier can't attach that file.", fails(t, sess, "focus_app", map[string]any{"chatID": w.room, "draftAttachmentPath": missing}))
+	require.Equal(t, "Vitruvian Courier can't attach that file.", fails(t, sess, "focus_app", map[string]any{"chatID": w.room, "draftAttachmentPath": missing}))
 }
 
 // An attachment goes out with the message it drafts, so it needs a token that may send.
@@ -581,7 +581,7 @@ func TestSearchDocsIsAStub(t *testing.T) {
 	sess := w.connect(t, secret)
 	text, isErr := call(t, sess, "search_docs", map[string]any{"query": "send", "language": "python"})
 	require.False(t, isErr)
-	require.Equal(t, "Courier has no documentation search. Each tool's description is its documentation.", text)
+	require.Equal(t, "Vitruvian Courier has no documentation search. Each tool's description is its documentation.", text)
 }
 
 // edit stores an edit of message target by its own sender, as the bridge would, and returns the edit's ID.
@@ -666,14 +666,14 @@ func TestEditedAndDeletedMessagesReadAsTheyAreNow(t *testing.T) {
 	require.Equal(t, "latest words", res.Messages[0].Text)
 }
 
-// While Courier is locked its window shows only the lock screen, so focus_app says so instead of claiming to have
+// While Vitruvian Courier is locked its window shows only the lock screen, so focus_app says so instead of claiming to have
 // opened the chat, and the app is told nothing.
 func TestFocusAppSaysWhenCourierIsLocked(t *testing.T) {
 	w := newWorld(t, 1)
 	sess := w.session(t, false)
 	w.api.SetAppLocked(true)
-	require.Equal(t, "Courier is locked. Unlock it to open the chat.", fails(t, sess, "focus_app", map[string]any{"chatID": w.room, "draftText": "hi"}))
-	require.Equal(t, "Courier is locked. Unlock it first.", fails(t, sess, "focus_app", nil))
+	require.Equal(t, "Vitruvian Courier is locked. Unlock it to open the chat.", fails(t, sess, "focus_app", map[string]any{"chatID": w.room, "draftText": "hi"}))
+	require.Equal(t, "Vitruvian Courier is locked. Unlock it first.", fails(t, sess, "focus_app", nil))
 	require.Empty(t, w.pub.all(), "nothing reached the app")
 
 	w.api.SetAppLocked(false)

@@ -3,7 +3,7 @@
 
 package rpc
 
-// The conformance test holds the engine to apps/desktop/courier/protocol: protocol.json is the definition and
+// The conformance test holds the engine to apps/desktop/vitruvian-courier/protocol: protocol.json is the definition and
 // examples/*.json show each method and notification. Every example must fit the definition, and the engine,
 // running on the fake network, must answer each example's request with a response of the same shape: the same
 // keys and the same JSON types all the way down. Values are not compared (IDs, times and paths differ from run to
@@ -27,24 +27,24 @@ import (
 	"maunium.net/go/mautrix/bridgev2/database"
 	"maunium.net/go/mautrix/bridgev2/networkid"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/actions"
-	"github.com/VitruvianSoftware/courier/engine/internal/engine"
-	"github.com/VitruvianSoftware/courier/engine/internal/fakenet"
-	"github.com/VitruvianSoftware/courier/engine/internal/ids"
-	"github.com/VitruvianSoftware/courier/engine/internal/localapi"
-	"github.com/VitruvianSoftware/courier/engine/internal/login"
-	"github.com/VitruvianSoftware/courier/engine/internal/media"
-	"github.com/VitruvianSoftware/courier/engine/internal/richtext"
-	"github.com/VitruvianSoftware/courier/engine/internal/search"
-	"github.com/VitruvianSoftware/courier/engine/internal/searchtext"
-	"github.com/VitruvianSoftware/courier/engine/internal/store"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/actions"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/engine"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/fakenet"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/ids"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/localapi"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/login"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/media"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/richtext"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/search"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/searchtext"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/store"
 )
 
-// protocolDir finds apps/desktop/courier/protocol: in the test's runfiles under Bazel, and by its place in the
+// protocolDir finds apps/desktop/vitruvian-courier/protocol: in the test's runfiles under Bazel, and by its place in the
 // source tree under plain go test (which runs in this package's directory).
 func protocolDir(t *testing.T) string {
 	t.Helper()
-	const rel = "apps/desktop/courier/protocol"
+	const rel = "apps/desktop/vitruvian-courier/protocol"
 	var tried []string
 	if srcdir := os.Getenv("TEST_SRCDIR"); srcdir != "" {
 		ws := os.Getenv("TEST_WORKSPACE")
@@ -943,7 +943,7 @@ func prepare(t *testing.T, w *world, name string, params map[string]any) {
 		w.direct(t)
 		params["room_id"], params["user_id"] = group, contact
 		if name == "room.directChat-not-connected" {
-			// Someone Courier has no chat with, and the account down: the network can't be asked in time.
+			// Someone Vitruvian Courier has no chat with, and the account down: the network can't be asked in time.
 			const someone = "@whatsapp_someone:courier.local"
 			require.NoError(t, w.s.SetMember(ctx, group, someone, json.RawMessage(`{"membership":"join"}`)))
 			w.wa.SetLoggedIn(w.waLogin, false)

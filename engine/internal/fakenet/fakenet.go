@@ -23,7 +23,7 @@ import (
 	"maunium.net/go/mautrix/event"
 	"maunium.net/go/mautrix/id"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/ids"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/ids"
 )
 
 // Call is one group or chat-management call the bridge delivered to the fake network.
@@ -47,7 +47,7 @@ type File struct {
 	MsgType  event.MessageType
 	Body     string
 	FileName string
-	URL      string // the content URI in courier's media store
+	URL      string // the content URI in Vitruvian Courier's media store
 	MimeType string
 	Size     int
 	Width    int

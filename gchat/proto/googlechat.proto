@@ -8,7 +8,7 @@ syntax = "proto2";
 
 package googlechat;
 
-option go_package = "github.com/VitruvianSoftware/courier/engine/internal/gchat/pb";
+option go_package = "github.com/VitruvianSoftware/vitruvian-courier/engine/internal/gchat/pb";
 
 enum UserType {
 	HUMAN = 0;

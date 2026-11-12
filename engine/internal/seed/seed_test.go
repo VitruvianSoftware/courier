@@ -16,26 +16,26 @@ import (
 	"github.com/stretchr/testify/require"
 	"maunium.net/go/mautrix/bridgev2"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/engine"
-	"github.com/VitruvianSoftware/courier/engine/internal/fakenet"
-	"github.com/VitruvianSoftware/courier/engine/internal/ids"
-	"github.com/VitruvianSoftware/courier/engine/internal/media"
-	"github.com/VitruvianSoftware/courier/engine/internal/store"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/engine"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/fakenet"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/ids"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/media"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/store"
 )
 
-// scenarioDir is apps/desktop/courier/seed/scenarios in the runfiles (BUILD's data).
+// scenarioDir is apps/desktop/vitruvian-courier/seed/scenarios in the runfiles (BUILD's data).
 func scenarioDir(t *testing.T) string {
 	t.Helper()
 	for _, root := range []string{os.Getenv("RUNFILES_DIR"), os.Getenv("TEST_SRCDIR")} {
 		if root == "" {
 			continue
 		}
-		dir := filepath.Join(root, "_main", "apps/desktop/courier/seed/scenarios")
+		dir := filepath.Join(root, "_main", "apps/desktop/vitruvian-courier/seed/scenarios")
 		if _, err := os.Stat(dir); err == nil {
 			return dir
 		}
 	}
-	t.Fatal("the scenarios are not in the runfiles: run with bazel test //apps/desktop/courier/engine/internal/seed:seed_test")
+	t.Fatal("the scenarios are not in the runfiles: run with bazel test //apps/desktop/vitruvian-courier/engine/internal/seed:seed_test")
 	return ""
 }
 

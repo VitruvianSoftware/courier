@@ -15,8 +15,8 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/entitlement"
-	"github.com/VitruvianSoftware/courier/engine/internal/store"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/entitlement"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/store"
 )
 
 // switchable is an entitlement provider a test can turn to deny-all.

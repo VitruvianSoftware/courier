@@ -15,7 +15,7 @@ const (
 	StepUserInput      = "user_input"       // ask for Fields, then call Submit
 	StepCookies        = "cookies"          // sign in on a web page, collect Cookies, then call Submit
 	StepComplete       = "complete"         // linked; the login is over
-	StepUnsupported    = "unsupported"      // a step Courier can't do; Instructions says what to do instead. The login is over.
+	StepUnsupported    = "unsupported"      // a step Vitruvian Courier can't do; Instructions says what to do instead. The login is over.
 )
 
 // Step is what the app is shown next. It is the wire shape: the engine's socket sends it as it is, and the
@@ -138,16 +138,16 @@ func toStep(loginID string, st *bridgev2.LoginStep) Step {
 	return out
 }
 
-// unsupported is the answer for a step Courier can't do (a passkey, a raw HTTP request, anything newer than
+// unsupported is the answer for a step Vitruvian Courier can't do (a passkey, a raw HTTP request, anything newer than
 // this code). The advice names the step so a bug report can say which one it was.
 func unsupported(loginID string, st *bridgev2.LoginStep) Step {
-	why := "isn't something Courier can do yet"
+	why := "isn't something Vitruvian Courier can do yet"
 	if st.Type == bridgev2.LoginStepTypeWebAuthn {
-		why = "needs a passkey or security key, which Courier can't use yet"
+		why = "needs a passkey or security key, which Vitruvian Courier can't use yet"
 	}
 	return Step{
 		LoginID: loginID, StepID: st.StepID, Type: StepUnsupported,
-		Instructions: fmt.Sprintf("Courier can't do this sign-in step (type %q, id %q): it %s. "+
+		Instructions: fmt.Sprintf("Vitruvian Courier can't do this sign-in step (type %q, id %q): it %s. "+
 			"Choose a different sign-in method for this network if it offers one.", st.Type, st.StepID, why),
 	}
 }

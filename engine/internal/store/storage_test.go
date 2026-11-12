@@ -14,7 +14,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/media"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/media"
 )
 
 func putTestBlob(t *testing.T, ms *media.Store, tag byte, size int) (hash, uri, path string) {

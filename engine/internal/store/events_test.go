@@ -15,7 +15,7 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/media"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/media"
 )
 
 // seedHistory gives roomID n messages $000…, oldest first, perTS of them sharing each timestamp (so that, within a

@@ -10,7 +10,7 @@ import (
 	"io/fs"
 	"path/filepath"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/actions"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/actions"
 )
 
 func stickersList(ctx context.Context, d *Deps, raw json.RawMessage) (any, error) {

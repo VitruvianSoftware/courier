@@ -14,11 +14,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/ids"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/ids"
 )
 
-// The REST part of the local API: two read-only endpoints of the reference app's /v1 API, the two HomeSpeaker
-// reads (apps/desktop/home-speaker, BeeperClient.swift), in the reference app's shape. They sit behind the same
+// The REST part of the local API: two read-only endpoints of the reference app's /v1 API, the two Vitruvian Speaker
+// reads (apps/desktop/vitruvian-speaker, BeeperClient.swift), in the reference app's shape. They sit behind the same
 // guards as the MCP endpoint (guard: no browser, a loopback Host unless Remote Access is on; requireToken: a token
 // the person approved, looked up on every request), and answer from the same code the MCP tools run: get_accounts's
 // accounts.list, and search_messages's search (findMessages), so a message reads as it does now (its latest edit)
@@ -79,7 +79,7 @@ func (s *Server) rest(name string, f func(ctx context.Context, q url.Values) (an
 		defer func() {
 			if rec := recover(); rec != nil {
 				outcome = "panic"
-				restError(w, http.StatusInternalServerError, "Courier couldn't do that (an internal error).")
+				restError(w, http.StatusInternalServerError, "Vitruvian Courier couldn't do that (an internal error).")
 			}
 			ev := s.log.Info()
 			if outcome == "panic" {
@@ -103,7 +103,7 @@ func (s *Server) rest(name string, f func(ctx context.Context, q url.Values) (an
 		b, err := json.Marshal(out)
 		if err != nil {
 			outcome = "error"
-			restError(w, http.StatusInternalServerError, "Courier couldn't do that (an internal error).")
+			restError(w, http.StatusInternalServerError, "Vitruvian Courier couldn't do that (an internal error).")
 			return
 		}
 		w.Header().Set("Content-Type", "application/json")
@@ -131,7 +131,7 @@ func restStatus(err error) int {
 	return http.StatusInternalServerError
 }
 
-// restError answers with status and {"error": a short code, "message": msg in plain words}. HomeSpeaker shows
+// restError answers with status and {"error": a short code, "message": msg in plain words}. Vitruvian Speaker shows
 // message; error is the same short code the guards answer with.
 func restError(w http.ResponseWriter, status int, msg string) {
 	code := "internal_error"
@@ -148,7 +148,7 @@ func restError(w http.ResponseWriter, status int, msg string) {
 	_ = json.NewEncoder(w).Encode(map[string]string{"error": code, "message": msg})
 }
 
-// restAccounts is GET /v1/accounts: every account signed in, as a list. The bridge's type is Courier's name for the
+// restAccounts is GET /v1/accounts: every account signed in, as a list. The bridge's type is Vitruvian Courier's name for the
 // network (whatsapp, slack, gchat, …); the user is me, as messages' mentions and senderID name me.
 func (s *Server) restAccounts(ctx context.Context, _ url.Values) (any, error) {
 	l := s.lookups(ctx)

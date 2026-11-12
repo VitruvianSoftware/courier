@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 // Package rpc is the engine's side of the app protocol: JSON-RPC 2.0 over a local Unix socket, one JSON object per
-// line. The protocol is defined in apps/desktop/courier/protocol/protocol.json, with examples beside it; the
+// line. The protocol is defined in apps/desktop/vitruvian-courier/protocol/protocol.json, with examples beside it; the
 // conformance test holds this package to both.
 //
 // Each connection must say hello first. Each request then runs on its own goroutine, since sending a message or
@@ -26,15 +26,15 @@ import (
 
 	"github.com/rs/zerolog"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/actions"
-	"github.com/VitruvianSoftware/courier/engine/internal/engine"
-	"github.com/VitruvianSoftware/courier/engine/internal/entitlement"
-	"github.com/VitruvianSoftware/courier/engine/internal/localapi"
-	"github.com/VitruvianSoftware/courier/engine/internal/login"
-	"github.com/VitruvianSoftware/courier/engine/internal/media"
-	"github.com/VitruvianSoftware/courier/engine/internal/search"
-	"github.com/VitruvianSoftware/courier/engine/internal/store"
-	"github.com/VitruvianSoftware/courier/engine/internal/timers"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/actions"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/engine"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/entitlement"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/localapi"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/login"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/media"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/search"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/store"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/timers"
 )
 
 // Protocol is the protocol version this engine speaks: protocol.json's "protocol".

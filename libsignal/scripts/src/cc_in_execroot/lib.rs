@@ -19,9 +19,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-//! Rust port of `apps/desktop/courier/libsignal/cc_in_execroot.sh`.
+//! Rust port of `apps/desktop/vitruvian-courier/libsignal/cc_in_execroot.sh`.
 //!
-//! Runs the toolchain's `$CC` from `$COURIER_BAZEL_EXECROOT` so execroot-relative
+//! Runs the toolchain's `$CC` from `$VITRUVIAN_COURIER_BAZEL_EXECROOT` so execroot-relative
 //! compiler flags resolve while `cc-rs` passes absolute paths for everything else.
 
 use std::env;
@@ -41,9 +41,9 @@ pub fn resolve_invocation(
     cc: Option<&str>,
     argv: &[String],
 ) -> Result<CcInvocation, String> {
-    let execroot_str = execroot
-        .filter(|s| !s.is_empty())
-        .ok_or_else(|| "COURIER_BAZEL_EXECROOT: parameter not set or empty".to_string())?;
+    let execroot_str = execroot.filter(|s| !s.is_empty()).ok_or_else(|| {
+        "VITRUVIAN_COURIER_BAZEL_EXECROOT: parameter not set or empty".to_string()
+    })?;
     let cc_str = cc
         .filter(|s| !s.is_empty())
         .ok_or_else(|| "CC: parameter not set or empty".to_string())?;
@@ -60,7 +60,7 @@ pub fn resolve_invocation(
 }
 
 pub fn run(argv: &[String]) -> i32 {
-    let execroot = env::var("COURIER_BAZEL_EXECROOT").ok();
+    let execroot = env::var("VITRUVIAN_COURIER_BAZEL_EXECROOT").ok();
     let cc = env::var("CC").ok();
     let inv = match resolve_invocation(execroot.as_deref(), cc.as_deref(), argv) {
         Ok(i) => i,

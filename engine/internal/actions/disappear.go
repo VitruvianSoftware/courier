@@ -14,7 +14,7 @@ import (
 	"maunium.net/go/mautrix/event"
 	"maunium.net/go/mautrix/id"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/ids"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/ids"
 )
 
 // SetDisappearing sets a chat's disappearing-message timer: typ "after_send" or "after_read" with a timer the chat

@@ -8,9 +8,9 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>Courier</string>
+	<string>Vitruvian Courier</string>
 	<key>CFBundleExecutable</key>
-	<string>Courier</string>
+	<string>VitruvianCourier</string>
 	<key>CFBundleIconFile</key>
 	<string>AppIcon</string>
 	<key>CFBundleIdentifier</key>
@@ -18,7 +18,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>Courier</string>
+	<string>Vitruvian Courier</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>LSApplicationCategoryType</key>
@@ -28,15 +28,15 @@
 	<key>NSHighResolutionCapable</key>
 	<true/>
 	<key>NSContactsUsageDescription</key>
-	<string>Courier matches people in your chats with your contacts on this Mac. Your contacts never leave this Mac.</string>
+	<string>Vitruvian Courier matches people in your chats with your contacts on this Mac. Your contacts never leave this Mac.</string>
 	<key>NSCalendarsFullAccessUsageDescription</key>
-	<string>Courier shows your schedule in the calendar pane and adds events from dates in your messages. Your calendar never leaves this Mac.</string>
+	<string>Vitruvian Courier shows your schedule in the calendar pane and adds events from dates in your messages. Your calendar never leaves this Mac.</string>
 	<key>NSDownloadsFolderUsageDescription</key>
-	<string>Courier saves the attachments you download to this folder. Nothing else in it is read or changed.</string>
+	<string>Vitruvian Courier saves the attachments you download to this folder. Nothing else in it is read or changed.</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>Courier uses the microphone to record voice notes and for Talk to Type. Audio stays on this Mac unless you send a voice note or turn on OpenAI Whisper.</string>
+	<string>Vitruvian Courier uses the microphone to record voice notes and for Talk to Type. Audio stays on this Mac unless you send a voice note or turn on OpenAI Whisper.</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
-	<string>Courier turns your speech into text on this Mac for Talk to Type and voice-note transcripts.</string>
+	<string>Vitruvian Courier turns your speech into text on this Mac for Talk to Type and voice-note transcripts.</string>
 	<key>NSSupportsAutomaticTermination</key>
 	<false/>
 </dict>

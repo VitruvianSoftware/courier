@@ -557,7 +557,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "courier-libsignal-ffi"
+name = "vitruvian-courier-libsignal-ffi"
 version = "0.0.0"
 dependencies = [
  "libsignal-ffi",

@@ -15,8 +15,8 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/require"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/search"
-	"github.com/VitruvianSoftware/courier/engine/internal/store"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/search"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/store"
 )
 
 // wireHits is a MessageHits as it comes off the wire.

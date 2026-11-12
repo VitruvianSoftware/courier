@@ -13,12 +13,12 @@ import (
 )
 
 // ErrLocked means another process holds the data directory's lock.
-var ErrLocked = errors.New("another Courier engine is using this data directory")
+var ErrLocked = errors.New("another Vitruvian Courier engine is using this data directory")
 
 // LockedError is the error Lock returns when another process holds the lock. It matches ErrLocked.
 type LockedError struct{ Dir string }
 
-func (e *LockedError) Error() string        { return "another Courier engine is using " + e.Dir }
+func (e *LockedError) Error() string        { return "another Vitruvian Courier engine is using " + e.Dir }
 func (e *LockedError) Is(target error) bool { return target == ErrLocked }
 
 // Lock takes an exclusive advisory lock on <dir>/.lock for as long as the returned release func has not been

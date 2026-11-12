@@ -1,7 +1,7 @@
 // Copyright 2026 VitruvianSoftware
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-// Package localapi is Courier's local API (milestone 5): an MCP server over streamable HTTP at /v0/mcp, the same
+// Package localapi is Vitruvian Courier's local API (milestone 5): an MCP server over streamable HTTP at /v0/mcp, the same
 // path the reference app uses, so an MCP client that used the reference app's server needs only a new address and
 // token. Each tool calls the engine's own protocol methods in-process (Dispatcher), so it answers from the same
 // code the app's requests run. Beside it, two read-only endpoints of the reference app's REST API, GET /v1/accounts
@@ -34,7 +34,7 @@ import (
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 	"github.com/rs/zerolog"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/store"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/store"
 )
 
 const (
@@ -119,8 +119,8 @@ func (s *Server) SetIdleTimeout(d time.Duration) {
 // once Apply says so.
 func New(s *store.Store, d Dispatcher, p Publisher, log zerolog.Logger) *Server {
 	srv := &Server{store: s, disp: d, pub: p, log: log, status: Status{Port: store.DefaultLocalAPIPort}}
-	srv.mcp = mcp.NewServer(&mcp.Implementation{Name: "courier", Title: "Courier", Version: "0.5"}, &mcp.ServerOptions{
-		Instructions: "Courier is a messaging app on this Mac that brings several chat networks into one inbox. " +
+	srv.mcp = mcp.NewServer(&mcp.Implementation{Name: "vitruvian-courier", Title: "Vitruvian Courier", Version: "0.5"}, &mcp.ServerOptions{
+		Instructions: "Vitruvian Courier is a messaging app on this Mac that brings several chat networks into one inbox. " +
 			"These tools read its chats and messages, and send messages when this connection is allowed to.",
 	})
 	srv.addTools()
@@ -134,7 +134,7 @@ func New(s *store.Store, d Dispatcher, p Publisher, log zerolog.Logger) *Server 
 	authed := auth.RequireBearerToken(srv.verify, &auth.RequireBearerTokenOptions{AllowMissingExpiration: true})(streamable)
 	mux := http.NewServeMux()
 	mux.Handle(MCPPath, srv.requireToken(authed))
-	// The two read-only REST endpoints HomeSpeaker reads (rest.go), behind the same token check and guards.
+	// The two read-only REST endpoints Vitruvian Speaker reads (rest.go), behind the same token check and guards.
 	mux.Handle(AccountsPath, srv.requireToken(srv.rest("accounts", srv.restAccounts)))
 	mux.Handle(MessagesSearchPath, srv.requireToken(srv.rest("messages.search", srv.restSearchMessages)))
 	mux.HandleFunc(PairPath, srv.servePair)
@@ -235,9 +235,9 @@ func listenError(port int, err error) string {
 		return fmt.Sprintf("Port %d is in use by another app", port)
 	}
 	if errors.Is(err, syscall.EACCES) {
-		return fmt.Sprintf("Courier isn't allowed to use port %d", port)
+		return fmt.Sprintf("Vitruvian Courier isn't allowed to use port %d", port)
 	}
-	return fmt.Sprintf("Courier couldn't listen on port %d", port)
+	return fmt.Sprintf("Vitruvian Courier couldn't listen on port %d", port)
 }
 
 // writeError answers with status and {"error": msg}. No CORS header is ever set.

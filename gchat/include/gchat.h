@@ -1,7 +1,7 @@
 // Copyright 2026 VitruvianSoftware
 // SPDX-License-Identifier: AGPL-3.0-only
-#ifndef COURIER_GCHAT_H
-#define COURIER_GCHAT_H
+#ifndef VITRUVIAN_COURIER_GCHAT_H
+#define VITRUVIAN_COURIER_GCHAT_H
 
 #include <stddef.h>
 #include <stdint.h>
@@ -105,4 +105,4 @@ GChatStatus gchat_download_media(
 }
 #endif
 
-#endif  // COURIER_GCHAT_H
+#endif  // VITRUVIAN_COURIER_GCHAT_H

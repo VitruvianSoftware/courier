@@ -16,9 +16,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/ids"
-	"github.com/VitruvianSoftware/courier/engine/internal/search"
-	"github.com/VitruvianSoftware/courier/engine/internal/store"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/ids"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/search"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/store"
 )
 
 type searchFilters struct {

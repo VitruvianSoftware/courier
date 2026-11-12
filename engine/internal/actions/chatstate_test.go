@@ -18,10 +18,10 @@ import (
 	"maunium.net/go/mautrix/event"
 	"maunium.net/go/mautrix/id"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/engine"
-	"github.com/VitruvianSoftware/courier/engine/internal/fakenet"
-	"github.com/VitruvianSoftware/courier/engine/internal/media"
-	"github.com/VitruvianSoftware/courier/engine/internal/store"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/engine"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/fakenet"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/media"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/store"
 )
 
 // row is the inbox row of room.
@@ -85,7 +85,7 @@ func TestPinOnANetworkWithoutPinsIsLocalOnly(t *testing.T) {
 	none(t, w.n.Tags, "a pin to a network that takes none")
 }
 
-// Review Focus 5: pinning a chat while its network won't take it pins it in Courier at once, keeps it pinned and
+// Review Focus 5: pinning a chat while its network won't take it pins it in Vitruvian Courier at once, keeps it pinned and
 // shows no error. The refusal is logged, by network name only.
 func TestPinStaysWhenTheNetworkRefuses(t *testing.T) {
 	ctx := context.Background()

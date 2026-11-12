@@ -18,9 +18,9 @@ import (
 
 	"maunium.net/go/mautrix/bridgev2/networkid"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/entitlement"
-	"github.com/VitruvianSoftware/courier/engine/internal/ids"
-	"github.com/VitruvianSoftware/courier/engine/internal/store"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/entitlement"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/ids"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/store"
 )
 
 const (
@@ -206,7 +206,7 @@ type inboxRow struct {
 	ReadAloud        string        `json:"read_aloud,omitempty"`
 }
 
-// callJSON is a CallNote: what a bridge's call notice says, as Courier reads it.
+// callJSON is a CallNote: what a bridge's call notice says, as Vitruvian Courier reads it.
 type callJSON struct {
 	State string `json:"state"`
 	Media string `json:"media"`

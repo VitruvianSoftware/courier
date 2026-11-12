@@ -8,7 +8,7 @@ import (
 	"unicode"
 	"unicode/utf16"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/richtext"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/richtext"
 )
 
 // fromMarkdown turns the Markdown an MCP client writes into what message.send takes: plain text and formatting

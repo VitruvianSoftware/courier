@@ -112,7 +112,7 @@ func (c *Connector) resolveChatDBPath(login *bridgev2.UserLogin) string {
 	if strings.TrimSpace(c.ChatDBPath) != "" {
 		return strings.TrimSpace(c.ChatDBPath)
 	}
-	if envPath := strings.TrimSpace(os.Getenv("COURIER_IMESSAGE_CHAT_DB")); envPath != "" {
+	if envPath := strings.TrimSpace(os.Getenv("VITRUVIAN_COURIER_IMESSAGE_CHAT_DB")); envPath != "" {
 		return envPath
 	}
 	return DefaultChatDBPath()

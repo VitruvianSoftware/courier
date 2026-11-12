@@ -7,7 +7,7 @@ use std::io::Write;
 use std::path::{Path, PathBuf};
 use std::process::Command;
 
-const STORE_RELATIVE: &str = "tools/sync-env-secrets/secrets/courier-release";
+const STORE_RELATIVE: &str = "tools/sync-env-secrets/secrets/vitruvian-courier-release";
 const ID_NAME: &str = "COURIER_TELEGRAM_API_ID";
 const HASH_NAME: &str = "COURIER_TELEGRAM_API_HASH";
 const ENGINE_ID: &str = "com.vitruviansoftware.courier.engine";
@@ -68,7 +68,7 @@ pub fn generate_plist(api_id: &str, api_hash: &str) -> String {
 pub fn store_dirs(script_dir: &Path) -> Vec<PathBuf> {
     let mut dirs = Vec::new();
 
-    if let Ok(secrets_dir) = env::var("COURIER_SECRETS_DIR") {
+    if let Ok(secrets_dir) = env::var("VITRUVIAN_COURIER_SECRETS_DIR") {
         if !secrets_dir.is_empty() {
             dirs.push(PathBuf::from(secrets_dir));
             return dirs;
@@ -141,11 +141,11 @@ fn read_store_file(dir: &Path, name: &str) -> Option<String> {
 fn resolve_default_entitlements() -> PathBuf {
     if let Ok(exe) = env::current_exe() {
         if let Some(exe_dir) = exe.parent() {
-            let candidate = exe_dir.join("../Resources/Courier.entitlements");
+            let candidate = exe_dir.join("../Resources/VitruvianCourier.entitlements");
             if candidate.exists() {
                 return candidate;
             }
-            let candidate = exe_dir.join("Resources/Courier.entitlements");
+            let candidate = exe_dir.join("Resources/VitruvianCourier.entitlements");
             if candidate.exists() {
                 return candidate;
             }
@@ -155,19 +155,19 @@ fn resolve_default_entitlements() -> PathBuf {
     if let Ok(exe) = env::current_exe() {
         if let Some(exe_dir) = exe.parent() {
             // Under Bazel runfiles the binary sits at e.g.
-            // apps/desktop/courier/app/inject-app-credentials
-            // and Resources is at apps/desktop/courier/app/Resources/
-            let candidate = exe_dir.join("../Resources/Courier.entitlements");
+            // apps/desktop/vitruvian-courier/app/inject-app-credentials
+            // and Resources is at apps/desktop/vitruvian-courier/app/Resources/
+            let candidate = exe_dir.join("../Resources/VitruvianCourier.entitlements");
             if let Ok(canon) = candidate.canonicalize() {
                 return canon;
             }
         }
     }
-    PathBuf::from("../Resources/Courier.entitlements")
+    PathBuf::from("../Resources/VitruvianCourier.entitlements")
 }
 
 fn find_identity() -> String {
-    if let Ok(id) = env::var("COURIER_SIGN_IDENTITY") {
+    if let Ok(id) = env::var("VITRUVIAN_COURIER_SIGN_IDENTITY") {
         if !id.is_empty() {
             return id;
         }
@@ -235,7 +235,7 @@ pub fn run(args: &[String]) -> i32 {
                 entitlements_override = Some(args[i].clone());
             }
             "-h" | "--help" => {
-                eprintln!("Usage: inject-app-credentials [--allow-missing] [--entitlements FILE] <path/to/Courier.app>");
+                eprintln!("Usage: inject-app-credentials [--allow-missing] [--entitlements FILE] <path/to/Vitruvian Courier.app>");
                 return 2;
             }
             s if s.starts_with('-') => {
@@ -244,7 +244,7 @@ pub fn run(args: &[String]) -> i32 {
             }
             _ => {
                 if !app_path.is_empty() {
-                    eprintln!("inject-app-credentials: one Courier.app at a time");
+                    eprintln!("inject-app-credentials: one Vitruvian Courier.app at a time");
                     return 2;
                 }
                 app_path = args[i].clone();
@@ -254,7 +254,7 @@ pub fn run(args: &[String]) -> i32 {
     }
 
     if app_path.is_empty() {
-        eprintln!("Usage: inject-app-credentials.sh [--allow-missing] [--entitlements FILE] <path/to/Courier.app>");
+        eprintln!("Usage: inject-app-credentials [--allow-missing] [--entitlements FILE] <path/to/Vitruvian Courier.app>");
         return 2;
     }
 
@@ -287,10 +287,10 @@ pub fn run(args: &[String]) -> i32 {
         return 2;
     }
 
-    let engine = app.join("Contents/Helpers/courier-engine");
+    let engine = app.join("Contents/Helpers/vitruvian-courier-engine");
     if !engine.exists() {
         eprintln!(
-            "inject-app-credentials: {} has no Contents/Helpers/courier-engine to sign",
+            "inject-app-credentials: {} has no Contents/Helpers/vitruvian-courier-engine to sign",
             app_str
         );
         return 2;
@@ -338,7 +338,7 @@ pub fn run(args: &[String]) -> i32 {
         if allow_missing {
             eprintln!("No Telegram app ID found (bazel run //tools/sync-env-secrets:bw-pull fetches it): leaving it out, so the app will ask for Telegram keys.");
         } else {
-            eprintln!("No Telegram app ID found for Courier.");
+            eprintln!("No Telegram app ID found for Vitruvian Courier.");
             eprintln!(
                 "Looked for {} and {} in the environment, then in the store:",
                 ID_NAME, HASH_NAME
@@ -347,7 +347,7 @@ pub fn run(args: &[String]) -> i32 {
                 eprintln!("  {}", dir.display());
             }
             eprintln!("To fetch them: bazel run //tools/sync-env-secrets:bw-pull");
-            eprintln!("(apps/desktop/courier/app/README.md says how to add them.)");
+            eprintln!("(apps/desktop/vitruvian-courier/app/README.md says how to add them.)");
             return 1;
         }
     } else {
@@ -430,7 +430,7 @@ pub fn run(args: &[String]) -> i32 {
     let identity = find_identity();
 
     let mut extra_flags: Vec<String> = Vec::new();
-    if let Ok(flags) = env::var("COURIER_SIGN_FLAGS") {
+    if let Ok(flags) = env::var("VITRUVIAN_COURIER_SIGN_FLAGS") {
         if !flags.is_empty() {
             extra_flags = flags.split_whitespace().map(|s| s.to_string()).collect();
         }

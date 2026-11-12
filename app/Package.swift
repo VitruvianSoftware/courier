@@ -4,34 +4,35 @@
 
 import PackageDescription
 
-// Courier.app. MUST MIRROR BUILD, target for target: CourierCore (everything the tests need), Courier (the app,
-// with @main), CourierCoreTests, and CourierViewTests, which renders the app's views (Bazel builds them without
-// App.swift as :CourierViews for it, since a test can't link @main; SwiftPM tests the executable target).
+// Vitruvian Courier.app. MUST MIRROR BUILD, target for target: VitruvianCourierCore (everything the tests need),
+// VitruvianCourier (the app, with @main), VitruvianCourierCoreTests, and VitruvianCourierViewTests, which renders the
+// app's views (Bazel builds them without App.swift as :VitruvianCourierViews for it, since a test can't link @main;
+// SwiftPM tests the executable target).
 //
-// `swift run Courier` needs an engine: set COURIER_ENGINE_PATH to a built courier-engine, and COURIER_DATA_DIR to a
-// scratch folder (never your real data). `scripts/test.sh` runs the tests.
+// `swift run VitruvianCourier` needs an engine: set VITRUVIAN_COURIER_ENGINE_PATH to a built vitruvian-courier-engine,
+// and VITRUVIAN_COURIER_DATA_DIR to a scratch folder (never your real data). `scripts/test.sh` runs the tests.
 let package = Package(
-    name: "Courier",
+    name: "VitruvianCourier",
     platforms: [.macOS(.v14)],
     targets: [
         .target(
-            name: "CourierCore",
-            path: "Sources/CourierCore"
+            name: "VitruvianCourierCore",
+            path: "Sources/VitruvianCourierCore"
         ),
         .executableTarget(
-            name: "Courier",
-            dependencies: ["CourierCore"],
-            path: "Sources/Courier"
+            name: "VitruvianCourier",
+            dependencies: ["VitruvianCourierCore"],
+            path: "Sources/VitruvianCourier"
         ),
         .testTarget(
-            name: "CourierCoreTests",
-            dependencies: ["CourierCore"],
-            path: "Tests/CourierCoreTests"
+            name: "VitruvianCourierCoreTests",
+            dependencies: ["VitruvianCourierCore"],
+            path: "Tests/VitruvianCourierCoreTests"
         ),
         .testTarget(
-            name: "CourierViewTests",
-            dependencies: ["Courier", "CourierCore"],
-            path: "Tests/CourierViewTests"
+            name: "VitruvianCourierViewTests",
+            dependencies: ["VitruvianCourier", "VitruvianCourierCore"],
+            path: "Tests/VitruvianCourierViewTests"
         ),
     ]
 )

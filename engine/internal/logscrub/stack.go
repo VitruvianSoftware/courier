@@ -96,16 +96,16 @@ func ScrubStartupError(prefix string, err error) string {
 // cleanSourcePath strips local filesystem prefixes from a Go stack frame file:line path,
 // keeping module@version/... or repo-relative paths.
 func cleanSourcePath(p string) string {
-	for _, marker := range []string{"/go/pkg/mod/", "/external/", "github.com/VitruvianSoftware/courier/"} {
+	for _, marker := range []string{"/go/pkg/mod/", "/external/", "github.com/VitruvianSoftware/vitruvian-courier/"} {
 		if idx := strings.Index(p, marker); idx >= 0 {
-			if marker == "github.com/VitruvianSoftware/courier/" {
+			if marker == "github.com/VitruvianSoftware/vitruvian-courier/" {
 				return p[idx:]
 			}
 			return p[idx+len(marker):]
 		}
 	}
-	if idx := strings.Index(p, "apps/desktop/courier/"); idx >= 0 {
-		return "github.com/VitruvianSoftware/courier/" + strings.TrimPrefix(p[idx:], "apps/desktop/courier/")
+	if idx := strings.Index(p, "apps/desktop/vitruvian-courier/"); idx >= 0 {
+		return "github.com/VitruvianSoftware/vitruvian-courier/" + strings.TrimPrefix(p[idx:], "apps/desktop/vitruvian-courier/")
 	}
 	return filepath.Base(p)
 }
@@ -126,9 +126,9 @@ func ScrubExportLine(raw string) (string, bool) {
 		return "", false
 	}
 
-	// 2. Startup error prefix ("courier-engine: ...") -> scrub paths and IDs.
-	if strings.HasPrefix(trimmed, "courier-engine: ") {
-		return "courier-engine: " + ScrubPath(strings.TrimPrefix(trimmed, "courier-engine: ")), true
+	// 2. Startup error prefix ("vitruvian-courier-engine: ...") -> scrub paths and IDs.
+	if strings.HasPrefix(trimmed, "vitruvian-courier-engine: ") {
+		return "vitruvian-courier-engine: " + ScrubPath(strings.TrimPrefix(trimmed, "vitruvian-courier-engine: ")), true
 	}
 
 	// 3. Panic / fatal header -> replace payload with [redacted] so panic(userJID) never leaks.

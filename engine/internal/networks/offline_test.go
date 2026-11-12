@@ -13,9 +13,9 @@ import (
 	telegram "go.mau.fi/mautrix-telegram/pkg/connector"
 	whatsapp "go.mau.fi/mautrix-whatsapp/pkg/connector"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/host"
-	"github.com/VitruvianSoftware/courier/engine/internal/media"
-	"github.com/VitruvianSoftware/courier/engine/internal/store"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/host"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/media"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/store"
 )
 
 // This runs every registered network's real connector through host.Start. It needs no account and no network:

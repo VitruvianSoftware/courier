@@ -9,8 +9,8 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/localapi"
-	"github.com/VitruvianSoftware/courier/engine/internal/store"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/localapi"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/store"
 )
 
 // Settings → Integrations (milestone 5): the local API's settings and status, its tokens, and the answer to a

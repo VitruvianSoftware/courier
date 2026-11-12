@@ -14,9 +14,9 @@ import (
 	"maunium.net/go/mautrix/bridgev2"
 	"maunium.net/go/mautrix/bridgev2/database"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/actions"
-	"github.com/VitruvianSoftware/courier/engine/internal/gchat"
-	"github.com/VitruvianSoftware/courier/engine/internal/imessage"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/actions"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/gchat"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/imessage"
 )
 
 // On macOS Signal, Google Chat and iMessage are registered after the portable eleven.

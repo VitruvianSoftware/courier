@@ -14,10 +14,10 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/require"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/fakenet"
-	"github.com/VitruvianSoftware/courier/engine/internal/ids"
-	"github.com/VitruvianSoftware/courier/engine/internal/logscrub"
-	"github.com/VitruvianSoftware/courier/engine/internal/store"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/fakenet"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/ids"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/logscrub"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/store"
 )
 
 // My typing goes out through bridgev2 (an m.typing ephemeral event for the chat) and reaches the network's
@@ -134,7 +134,7 @@ func (b *syncBuffer) String() string {
 }
 
 // Never log who: typing and receipts carry user IDs, and the engine logs none of them (at the level the engine runs
-// at, warn, through its log writer), even when the network refuses typing or a receipt names nothing Courier has. My
+// at, warn, through its log writer), even when the network refuses typing or a receipt names nothing Vitruvian Courier has. My
 // own ID is "@me:courier.local" on every Mac, so it names no one; a contact's ID (their ghost) must never appear.
 //
 // The warnings this reads are bridgev2's own: its handleMatrixTyping answers success whatever the network says and
@@ -146,7 +146,7 @@ func TestTypingNeverLogsWho(t *testing.T) {
 	n := fakenet.New()
 	direct := true
 	n.SetChat("chat1", fakenet.Chat{Direct: &direct}) // one-to-one, so bridgev2 takes its deliveries (surprise 2)
-	// The engine's logger, as cmd/courier-engine makes it: through the log writer, at warn.
+	// The engine's logger, as cmd/vitruvian-courier-engine makes it: through the log writer, at warn.
 	w := startWorldOn(t, "fake", n, true, zerolog.New(logscrub.New(logs)).Level(zerolog.WarnLevel))
 	room, _ := w.chat(t, "chat1", "m1")
 
@@ -161,7 +161,7 @@ func TestTypingNeverLogsWho(t *testing.T) {
 	w.down()
 	require.NoError(t, w.a.SetTyping(ctx, room, true))
 	w.up()
-	// A delivery and a read receipt for a message Courier doesn't have, and the contact's read receipt. bridgev2 itself
+	// A delivery and a read receipt for a message Vitruvian Courier doesn't have, and the contact's read receipt. bridgev2 itself
 	// warns of the second ("No target message found for read receipt") with the contact's network ID and the chat's in
 	// its log context (remote_sender, portal_id): the engine's log writer (logscrub) keeps neither.
 	n.Receipt(w.login, "chat1", "alice", []string{"no-such-message"}, true)

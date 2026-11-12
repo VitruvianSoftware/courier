@@ -16,8 +16,8 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/require"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/store"
-	"github.com/VitruvianSoftware/courier/engine/internal/store/storetest"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/store"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/store/storetest"
 )
 
 // batchFailed is the warning RunBackfill logs for a failed batch.

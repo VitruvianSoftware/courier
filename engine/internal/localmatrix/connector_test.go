@@ -20,8 +20,8 @@ import (
 	"maunium.net/go/mautrix/event"
 	"maunium.net/go/mautrix/id"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/ids"
-	"github.com/VitruvianSoftware/courier/engine/internal/store"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/ids"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/store"
 )
 
 func TestGhostIDsRoundTripThroughConnector(t *testing.T) {
@@ -207,7 +207,7 @@ func TestDeliveredToBecomesADelivery(t *testing.T) {
 		t.Fatal("the delivery published nothing")
 	}
 
-	// A delivery of a message Courier doesn't have is dropped, without touching anything.
+	// A delivery of a message Vitruvian Courier doesn't have is dropped, without touching anything.
 	c.SendMessageStatus(ctx, &bridgev2.MessageStatus{Status: event.MessageStatusSuccess, DeliveredTo: []id.UserID{friend}},
 		&bridgev2.MessageStatusEventInfo{RoomID: roomID, SourceEventID: "$not-here"})
 }

@@ -13,7 +13,7 @@ pub fn resolve_app(paths: &[String]) -> Result<PathBuf, String> {
     for path in paths {
         if path.ends_with(".zip") {
             archive = Some(PathBuf::from(path));
-        } else if path.ends_with("Courier.app") && Path::new(path).is_dir() {
+        } else if path.ends_with("Vitruvian Courier.app") && Path::new(path).is_dir() {
             app = Some(PathBuf::from(path));
         } else {
             let zip = format!("{}.zip", path);
@@ -34,14 +34,19 @@ pub fn resolve_app(paths: &[String]) -> Result<PathBuf, String> {
             if !status.success() {
                 return Err(format!("unzip failed on {}", arc.display()));
             }
-            let candidate = PathBuf::from(&dest).join("Courier.app");
+            let candidate = PathBuf::from(&dest).join("Vitruvian Courier.app");
             if candidate.is_dir() {
                 app = Some(candidate);
             }
         }
     }
 
-    app.ok_or_else(|| format!("no Courier.app among the paths given: {}", paths.join(" ")))
+    app.ok_or_else(|| {
+        format!(
+            "no Vitruvian Courier.app among the paths given: {}",
+            paths.join(" ")
+        )
+    })
 }
 
 pub fn run(args: &[String]) -> i32 {
@@ -63,9 +68,9 @@ pub fn run(args: &[String]) -> i32 {
 
     let mut failed = 0;
 
-    let engine = app.join("Contents/Helpers/courier-engine");
+    let engine = app.join("Contents/Helpers/vitruvian-courier-engine");
     if !engine.exists() {
-        eprintln!("FAIL: Contents/Helpers/courier-engine is missing or not executable");
+        eprintln!("FAIL: Contents/Helpers/vitruvian-courier-engine is missing or not executable");
         eprintln!("Contents holds:");
         let _ = Command::new("find")
             .args([
@@ -83,7 +88,9 @@ pub fn run(args: &[String]) -> i32 {
         use std::os::unix::fs::PermissionsExt;
         if let Ok(meta) = fs::metadata(&engine) {
             if meta.permissions().mode() & 0o111 == 0 {
-                eprintln!("FAIL: Contents/Helpers/courier-engine is missing or not executable");
+                eprintln!(
+                    "FAIL: Contents/Helpers/vitruvian-courier-engine is missing or not executable"
+                );
                 return 1;
             }
         }
@@ -93,21 +100,21 @@ pub fn run(args: &[String]) -> i32 {
     // one-CPU engine would start on the other CPU and its engine would not.
     let engine_str = engine.to_string_lossy().to_string();
     match (
-        crate::archs::read(&app.join("Contents/MacOS/Courier")),
+        crate::archs::read(&app.join("Contents/MacOS/VitruvianCourier")),
         crate::archs::read(&engine),
     ) {
         (Ok(app_archs), Ok(engine_archs)) => {
             let lacking = crate::archs::engine_lacks(&app_archs, &engine_archs);
             if engine_archs.is_empty() || !lacking.is_empty() {
                 eprintln!(
-                    "FAIL: the app runs on {} but courier-engine only on {}",
+                    "FAIL: the app runs on {} but vitruvian-courier-engine only on {}",
                     app_archs.join(" "),
                     engine_archs.join(" ")
                 );
                 failed = 1;
             } else {
                 println!(
-                    "ok: courier-engine runs on {} (the app: {})",
+                    "ok: vitruvian-courier-engine runs on {} (the app: {})",
                     engine_archs.join(" "),
                     app_archs.join(" ")
                 );
@@ -128,12 +135,13 @@ pub fn run(args: &[String]) -> i32 {
                 String::from_utf8_lossy(&out.stdout),
                 String::from_utf8_lossy(&out.stderr)
             );
-            if status == 2 && combined.contains("usage: courier-engine --data DIR [--parent-fd N]")
+            if status == 2
+                && combined.contains("usage: vitruvian-courier-engine --data DIR [--parent-fd N]")
             {
-                println!("ok: courier-engine --help exits 2 with its usage");
+                println!("ok: vitruvian-courier-engine --help exits 2 with its usage");
             } else {
                 eprintln!(
-                    "FAIL: courier-engine --help exited {} with: {}",
+                    "FAIL: vitruvian-courier-engine --help exited {} with: {}",
                     status,
                     combined.trim()
                 );
@@ -141,7 +149,7 @@ pub fn run(args: &[String]) -> i32 {
             }
         }
         Err(e) => {
-            eprintln!("FAIL: cannot run courier-engine --help: {}", e);
+            eprintln!("FAIL: cannot run vitruvian-courier-engine --help: {}", e);
             failed = 1;
         }
     }

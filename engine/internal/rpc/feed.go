@@ -4,7 +4,7 @@
 package rpc
 
 import (
-	"github.com/VitruvianSoftware/courier/engine/internal/store"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/store"
 )
 
 // changed is the params of a changed notification: what changed, so the app knows what to re-query.

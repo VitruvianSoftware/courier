@@ -17,8 +17,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/ids"
-	"github.com/VitruvianSoftware/courier/engine/internal/searchtext"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/ids"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/searchtext"
 )
 
 // The query side of the search index (searchindex.go). Every statement here is built from fixed fragments; every

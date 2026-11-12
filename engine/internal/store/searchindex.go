@@ -17,8 +17,8 @@ import (
 
 	"github.com/rs/zerolog"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/ids"
-	"github.com/VitruvianSoftware/courier/engine/internal/searchtext"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/ids"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/searchtext"
 )
 
 // The search index (migration 4) is three contentless FTS5 tables. Each row holds the normalised text a person

@@ -6,7 +6,7 @@ package engine
 
 import _ "embed"
 
-// GoMod is the raw contents of apps/desktop/courier/engine/go.mod embedded at compile time.
+// GoMod is the raw contents of apps/desktop/vitruvian-courier/engine/go.mod embedded at compile time.
 //
 //go:embed go.mod
 var GoMod string

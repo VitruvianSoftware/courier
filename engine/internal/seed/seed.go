@@ -1,9 +1,9 @@
 // Copyright 2026 VitruvianSoftware
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-// Package seed plays a made-up scenario (apps/desktop/courier/seed/scenarios, README.md beside them) into fake
-// networks, so the Courier Test Copy opens already full of chats. Only the test copy's engine links it: the
-// courier-engine-seeded binary, built with the Go build tag courierseed (cmd/courier-engine/seed_on.go). The
+// Package seed plays a made-up scenario (apps/desktop/vitruvian-courier/seed/scenarios, README.md beside them) into fake
+// networks, so the Vitruvian Courier Test Copy opens already full of chats. Only the test copy's engine links it: the
+// vitruvian-courier-engine-seeded binary, built with the Go build tag courierseed (cmd/vitruvian-courier-engine/seed_on.go). The
 // released engine is built without the tag and must not hold this package; the app's
 // release_engine_has_no_seed_test looks for Marker in it.
 package seed
@@ -23,7 +23,7 @@ import (
 	"maunium.net/go/mautrix/bridgev2"
 	"maunium.net/go/mautrix/event"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/fakenet"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/fakenet"
 )
 
 // Marker is a string only this package's code holds, written into the played marker file (PlayedFile), so the

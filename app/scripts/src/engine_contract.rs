@@ -37,7 +37,7 @@ fn extract_swift_protocol_version(swift_path: &str) -> Option<String> {
 
 pub fn run(args: &[String]) -> i32 {
     if args.len() < 4 {
-        eprintln!("Usage: engine-contract <courier-engine> <EngineSupervisor.swift> <Protocol.swift> <protocol files>...");
+        eprintln!("Usage: engine-contract <vitruvian-courier-engine> <EngineSupervisor.swift> <Protocol.swift> <protocol files>...");
         return 2;
     }
 

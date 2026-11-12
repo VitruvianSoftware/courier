@@ -8,8 +8,8 @@ import (
 	"encoding/json"
 	"strings"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/actions"
-	"github.com/VitruvianSoftware/courier/engine/internal/store"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/actions"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/store"
 )
 
 func peopleContacts(ctx context.Context, d *Deps, raw json.RawMessage) (any, error) {

@@ -52,7 +52,7 @@ fn running_pids(patterns: &[String]) -> Vec<u32> {
 
 pub fn run(args: &[String]) -> i32 {
     if args.len() < 3 {
-        eprintln!("Usage: install <inject-app-credentials> <Courier.zip> [--dest DIR]");
+        eprintln!("Usage: install <inject-app-credentials> <VitruvianCourier.zip> [--dest DIR]");
         return 2;
     }
 
@@ -85,7 +85,7 @@ pub fn run(args: &[String]) -> i32 {
     };
 
     if !archive.exists() {
-        eprintln!("install: no Courier.zip at {}", archive.display());
+        eprintln!("install: no VitruvianCourier.zip at {}", archive.display());
         return 2;
     }
     if !dest.is_dir() {
@@ -94,10 +94,14 @@ pub fn run(args: &[String]) -> i32 {
     }
 
     let dest = fs::canonicalize(&dest).unwrap_or(dest);
-    let installed = dest.join("Courier.app");
+    let installed = dest.join("Vitruvian Courier.app");
 
     let scratch_base = env::var("TMPDIR").unwrap_or_else(|_| "/tmp".to_string());
-    let scratch = format!("{}/courier-install.{}", scratch_base, std::process::id());
+    let scratch = format!(
+        "{}/vitruvian-courier-install.{}",
+        scratch_base,
+        std::process::id()
+    );
     let _ = fs::create_dir_all(&scratch);
 
     // Unzip
@@ -115,9 +119,9 @@ pub fn run(args: &[String]) -> i32 {
         return 1;
     }
 
-    let app = format!("{}/unpacked/Courier.app", scratch);
+    let app = format!("{}/unpacked/Vitruvian Courier.app", scratch);
     if !Path::new(&app).is_dir() {
-        eprintln!("install: the archive holds no Courier.app");
+        eprintln!("install: the archive holds no Vitruvian Courier.app");
         let _ = fs::remove_dir_all(&scratch);
         return 1;
     }
@@ -132,25 +136,35 @@ pub fn run(args: &[String]) -> i32 {
 
     let plist_path = format!("{}/Contents/Resources/TelegramApp.plist", app);
     if !Path::new(&plist_path).exists() {
-        println!("Note: this Courier has no Telegram app ID built in, so it will ask for Telegram keys when Telegram is added.");
+        println!("Note: this Vitruvian Courier has no Telegram app ID built in, so it will ask for Telegram keys when Telegram is added.");
     }
 
     // Build patterns for running process detection
     let installed_str = installed.to_string_lossy().to_string();
     let installed_real = fs::canonicalize(&dest)
-        .map(|d| d.join("Courier.app").to_string_lossy().to_string())
+        .map(|d| {
+            d.join("Vitruvian Courier.app")
+                .to_string_lossy()
+                .to_string()
+        })
         .unwrap_or_else(|_| installed_str.clone());
 
     let mut patterns = Vec::new();
     for prefix in &[&installed_str, &installed_real] {
         let escaped = regex_escape(prefix);
-        patterns.push(format!("^{}/Contents/MacOS/Courier( |$)", escaped));
-        patterns.push(format!("^{}/Contents/Helpers/courier-engine( |$)", escaped));
+        patterns.push(format!("^{}/Contents/MacOS/VitruvianCourier( |$)", escaped));
+        patterns.push(format!(
+            "^{}/Contents/Helpers/vitruvian-courier-engine( |$)",
+            escaped
+        ));
     }
 
     let pids = running_pids(&patterns);
     if !pids.is_empty() {
-        println!("Quitting the Courier installed in {}...", dest.display());
+        println!(
+            "Quitting the Vitruvian Courier installed in {}...",
+            dest.display()
+        );
         let _ = Command::new("osascript")
             .args(["-e", &format!("quit app \"{}\"", installed_str)])
             .stdout(std::process::Stdio::null())
@@ -171,14 +185,14 @@ pub fn run(args: &[String]) -> i32 {
         }
 
         if !running_pids(&patterns).is_empty() {
-            eprintln!("install: Courier is still running after 30 seconds. Quit it and run this again; nothing was replaced.");
+            eprintln!("install: Vitruvian Courier is still running after 30 seconds. Quit it and run this again; nothing was replaced.");
             let _ = fs::remove_dir_all(&scratch);
             return 1;
         }
     }
 
-    let staging = dest.join(".Courier.app.new");
-    let aside = dest.join(".Courier.app.old");
+    let staging = dest.join(".Vitruvian Courier.app.new");
+    let aside = dest.join(".Vitruvian Courier.app.old");
     let _ = fs::remove_dir_all(&staging);
 
     // Recover from interrupted previous install
@@ -186,7 +200,7 @@ pub fn run(args: &[String]) -> i32 {
         if !installed.exists() {
             let _ = fs::rename(&aside, &installed);
             println!(
-                "Note: an earlier install was interrupted; the Courier it had set aside is back in {}.",
+                "Note: an earlier install was interrupted; the Vitruvian Courier it had set aside is back in {}.",
                 dest.display()
             );
         } else {
@@ -199,7 +213,7 @@ pub fn run(args: &[String]) -> i32 {
                 let _ = fs::remove_dir_all(&installed);
                 let _ = fs::rename(&aside, &installed);
                 println!(
-                    "Note: an earlier install was interrupted; the Courier it had set aside is back in {}.",
+                    "Note: an earlier install was interrupted; the Vitruvian Courier it had set aside is back in {}.",
                     dest.display()
                 );
             }
@@ -236,7 +250,7 @@ pub fn run(args: &[String]) -> i32 {
                 let _ = fs::remove_dir_all(&installed);
                 let _ = fs::rename(&aside, &installed);
             }
-            eprintln!("install: Could not move the new app into place. The previous Courier is back in place.");
+            eprintln!("install: Could not move the new app into place. The previous Vitruvian Courier is back in place.");
         } else {
             let _ = fs::remove_dir_all(&installed);
             eprintln!("install: Could not move the new app into place. Nothing was installed.");
@@ -255,7 +269,7 @@ pub fn run(args: &[String]) -> i32 {
                 let _ = fs::remove_dir_all(&installed);
                 let _ = fs::rename(&aside, &installed);
             }
-            eprintln!("install: The new app does not pass codesign --verify. The previous Courier is back in place.");
+            eprintln!("install: The new app does not pass codesign --verify. The previous Vitruvian Courier is back in place.");
         } else {
             let _ = fs::remove_dir_all(&installed);
             eprintln!(

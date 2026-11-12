@@ -1,23 +1,23 @@
 // Copyright 2026 VitruvianSoftware
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-//! `bazel run //apps/desktop/courier/app:publish [-- --dry-run]`
+//! `bazel run //apps/desktop/vitruvian-courier/app:publish [-- --dry-run]`
 //!
-//! Builds the release Courier.app (app and engine, each for arm64 and
-//! x86_64), adds Courier's Telegram app ID, and hands the app to
+//! Builds the release Vitruvian Courier.app (app and engine, each for arm64 and
+//! x86_64), adds Vitruvian Courier's Telegram app ID, and hands the app to
 //! `//tools/desktop-package`, which signs it (the engine, then the app, with
 //! the hardened runtime), notarises it when the notary key is in the
 //! environment, makes the DMGs and the ZIP with their checksums and the
 //! Homebrew cask, and, on a real release, uploads them and pushes the cask.
 //!
 //! Inputs, from the environment:
-//!   RELEASE_TAG (or TAG)   courier-vX.Y.Z. Needed for a real release; it must
+//!   RELEASE_TAG (or TAG)   vitruvian-courier-vX.Y.Z. Needed for a real release; it must
 //!                          match app/version.bzl. A dry run may leave it out.
 //!   DRY_RUN=true           the same as --dry-run: package and check, upload
 //!                          nothing, push nothing.
 //!   COURIER_TELEGRAM_API_ID, COURIER_TELEGRAM_API_HASH
-//!                          Courier's Telegram app ID (secrets of the
-//!                          courier-release GitHub Environment). A real release refuses
+//!                          Vitruvian Courier's Telegram app ID (secrets of the
+//!                          vitruvian-courier-release GitHub Environment). A real release refuses
 //!                          to start without both; a dry run goes on without.
 //!   NOTARY_KEY_ID, NOTARY_ISSUER_ID, NOTARY_API_KEY_P8
 //!                          the notary key. A real release refuses to start
@@ -26,7 +26,7 @@
 //!   SIGNING_IDENTITY, GH_TOKEN, HOMEBREW_TAP_TOKEN
 //!                          read by //tools/desktop-package.
 //!
-//! The release workflow is .github/workflows/courier-release.yaml.
+//! The release workflow is .github/workflows/vitruvian-courier-release.yaml.
 
 use std::collections::BTreeMap;
 use std::fs;
@@ -35,19 +35,21 @@ use std::process::Command;
 
 use crate::archs;
 
-pub const APP_NAME: &str = "Courier";
-pub const CASK_NAME: &str = "courier";
-pub const TAG_PREFIX: &str = "courier-v";
-pub const TARGET: &str = "//apps/desktop/courier/app:Courier";
-pub const VERSION_FILE: &str = "apps/desktop/courier/app/version.bzl";
-pub const DIST_DIR: &str = "apps/desktop/courier/dist";
+pub const APP_NAME: &str = "Vitruvian Courier";
+pub const ARTIFACT_STEM: &str = "VitruvianCourier";
+pub const CASK_NAME: &str = "vitruvian-courier";
+pub const TAG_PREFIX: &str = "vitruvian-courier-v";
+pub const TARGET: &str = "//apps/desktop/vitruvian-courier/app:VitruvianCourier";
+pub const VERSION_FILE: &str = "apps/desktop/vitruvian-courier/app/version.bzl";
+pub const DIST_DIR: &str = "apps/desktop/vitruvian-courier/dist";
 pub const CASK_DESC: &str = "Every chat app in one inbox, on this Mac";
 pub const CASK_HOMEPAGE: &str =
-    "https://github.com/VitruvianSoftware/vitruvian-core/tree/main/apps/desktop/courier";
+    "https://github.com/VitruvianSoftware/vitruvian-core/tree/main/apps/desktop/vitruvian-courier";
 const TELEGRAM_ID: &str = "COURIER_TELEGRAM_API_ID";
 const TELEGRAM_HASH: &str = "COURIER_TELEGRAM_API_HASH";
 
-const USAGE: &str = "usage: publish [--dry-run]   (env: RELEASE_TAG=courier-vX.Y.Z, DRY_RUN=true)";
+const USAGE: &str =
+    "usage: publish [--dry-run]   (env: RELEASE_TAG=vitruvian-courier-vX.Y.Z, DRY_RUN=true)";
 
 /// What one run does.
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -60,11 +62,11 @@ pub struct Plan {
     pub bazel_flags: Vec<String>,
 }
 
-/// `courier-v1.2.3` -> `1.2.3`. Anything else is refused: the tag is what
+/// `vitruvian-courier-v1.2.3` -> `1.2.3`. Anything else is refused: the tag is what
 /// release-please cut, and a release built from a guess is worse than none.
 pub fn version_from_tag(tag: &str) -> Result<String, String> {
     let rest = tag.strip_prefix(TAG_PREFIX).ok_or_else(|| {
-        format!("publish: {tag} is not a Courier release tag ({TAG_PREFIX}X.Y.Z)")
+        format!("publish: {tag} is not a Vitruvian Courier release tag ({TAG_PREFIX}X.Y.Z)")
     })?;
     let parts: Vec<&str> = rest.split('.').collect();
     let numeric = parts.len() == 3
@@ -73,17 +75,17 @@ pub fn version_from_tag(tag: &str) -> Result<String, String> {
             .all(|p| !p.is_empty() && p.chars().all(|c| c.is_ascii_digit()));
     if !numeric {
         return Err(format!(
-            "publish: {tag} is not a Courier release tag ({TAG_PREFIX}X.Y.Z)"
+            "publish: {tag} is not a Vitruvian Courier release tag ({TAG_PREFIX}X.Y.Z)"
         ));
     }
     Ok(rest.to_string())
 }
 
-/// `COURIER_VERSION = "0.3.0"  # x-release-please-version` -> `0.3.0`.
+/// `VITRUVIAN_COURIER_VERSION = "0.3.0"  # x-release-please-version` -> `0.3.0`.
 pub fn version_from_bzl(text: &str) -> Result<String, String> {
     for line in text.lines() {
         let line = line.trim();
-        if let Some(rest) = line.strip_prefix("COURIER_VERSION") {
+        if let Some(rest) = line.strip_prefix("VITRUVIAN_COURIER_VERSION") {
             let rest = rest.trim_start();
             if let Some(rest) = rest.strip_prefix('=') {
                 let rest = rest.trim_start();
@@ -99,7 +101,7 @@ pub fn version_from_bzl(text: &str) -> Result<String, String> {
         }
     }
     Err(format!(
-        "publish: no COURIER_VERSION = \"X.Y.Z\" in {VERSION_FILE}"
+        "publish: no VITRUVIAN_COURIER_VERSION = \"X.Y.Z\" in {VERSION_FILE}"
     ))
 }
 
@@ -150,9 +152,9 @@ pub fn resolve_plan(
         && (non_empty(env, TELEGRAM_ID).is_none() || non_empty(env, TELEGRAM_HASH).is_none())
     {
         return Err(format!(
-            "publish: a real release needs Courier's Telegram app ID ({TELEGRAM_ID} and {TELEGRAM_HASH}); \
-             without it Telegram would ask each person for developer keys. Set both in the courier-release GitHub Environment \
-             (bazel run //tools/sync-env-secrets:apply -- courier-release)"
+            "publish: a real release needs Vitruvian Courier's Telegram app ID ({TELEGRAM_ID} and {TELEGRAM_HASH}); \
+             without it Telegram would ask each person for developer keys. Set both in the vitruvian-courier-release GitHub Environment \
+             (bazel run //tools/sync-env-secrets:apply -- vitruvian-courier-release)"
         ));
     }
 
@@ -249,11 +251,11 @@ pub fn package_args(plan: &Plan, app: &Path, entitlements: &Path, dist: &Path) -
 /// Every file a packaged release leaves in dist, each non-empty.
 pub fn expected_dist_files(version: &str) -> Vec<String> {
     let artifacts = [
-        format!("{APP_NAME}-{version}-universal.dmg"),
-        format!("{APP_NAME}-{version}.dmg"),
-        format!("{APP_NAME}-{version}-arm64.dmg"),
-        format!("{APP_NAME}-{version}-x86_64.dmg"),
-        format!("{APP_NAME}-{version}-universal.zip"),
+        format!("{ARTIFACT_STEM}-{version}-universal.dmg"),
+        format!("{ARTIFACT_STEM}-{version}.dmg"),
+        format!("{ARTIFACT_STEM}-{version}-arm64.dmg"),
+        format!("{ARTIFACT_STEM}-{version}-x86_64.dmg"),
+        format!("{ARTIFACT_STEM}-{version}-universal.zip"),
     ];
     let mut files = Vec::with_capacity(artifacts.len() * 2 + 1);
     for artifact in &artifacts {
@@ -303,7 +305,7 @@ fn absolute(p: &str) -> PathBuf {
     fs::canonicalize(p).unwrap_or_else(|_| PathBuf::from(p))
 }
 
-/// args: <inject-app-credentials> <Courier.entitlements> <package-desktop>
+/// args: <inject-app-credentials> <VitruvianCourier.entitlements> <package-desktop>
 /// <sync_downloads> [--dry-run]. Bazel's `args` supply the first four.
 pub fn run(args: &[String]) -> i32 {
     if args.iter().skip(1).any(|a| a == "--help" || a == "-h") {
@@ -311,7 +313,9 @@ pub fn run(args: &[String]) -> i32 {
         return 0;
     }
     if args.len() < 5 {
-        eprintln!("publish: run it with `bazel run //apps/desktop/courier/app:publish`\n{USAGE}");
+        eprintln!(
+            "publish: run it with `bazel run //apps/desktop/vitruvian-courier/app:publish`\n{USAGE}"
+        );
         return 2;
     }
     let injector = absolute(&args[1]);
@@ -339,7 +343,7 @@ pub fn run(args: &[String]) -> i32 {
         }
     };
     println!(
-        "==> Courier {}{}{}",
+        "==> Vitruvian Courier {}{}{}",
         plan.version,
         if plan.tag.is_empty() {
             String::new()
@@ -362,12 +366,15 @@ pub fn run(args: &[String]) -> i32 {
         &sync_tool,
     ) {
         Ok(()) => {
-            println!("==> Courier {} packaged.", plan.version);
+            println!("==> Vitruvian Courier {} packaged.", plan.version);
             0
         }
         Err(e) => {
             eprintln!("publish: {e}");
-            eprintln!("publish: Courier {} was NOT released", plan.version);
+            eprintln!(
+                "publish: Vitruvian Courier {} was NOT released",
+                plan.version
+            );
             1
         }
     }
@@ -405,7 +412,7 @@ fn publish(
         ));
     }
     let archive = archive_from_cquery(&String::from_utf8_lossy(&out.stdout))
-        .ok_or("bazel cquery named no Courier.zip")?;
+        .ok_or("bazel cquery named no VitruvianCourier.zip")?;
     let archive = workspace.join(archive);
 
     // 2. Unpack it into a clean dist.
@@ -427,8 +434,11 @@ fn publish(
 
     // 3. Both the app and its engine run on both CPUs.
     for (what, path) in [
-        ("the app", app.join("Contents/MacOS/Courier")),
-        ("the engine", app.join("Contents/Helpers/courier-engine")),
+        ("the app", app.join("Contents/MacOS/VitruvianCourier")),
+        (
+            "the engine",
+            app.join("Contents/Helpers/vitruvian-courier-engine"),
+        ),
     ] {
         let have = archs::read(&path)?;
         let lacking = archs::missing(&archs::RELEASE_ARCHS, &have);
@@ -443,7 +453,7 @@ fn publish(
         println!("ok: {what} runs on {}", have.join(" "));
     }
 
-    // 4. Courier's Telegram app ID. The injector signs too; package-desktop
+    // 4. Vitruvian Courier's Telegram app ID. The injector signs too; package-desktop
     //    signs again, for the release.
     let inject = injector_args(plan, entitlements, &app);
     run_in(workspace, &injector.display().to_string(), &inject, &inject)?;
@@ -486,7 +496,7 @@ mod tests {
     use super::*;
 
     const BZL: &str =
-        "\"\"\"doc\"\"\"\n\nCOURIER_VERSION = \"0.3.0\"  # x-release-please-version\n";
+        "\"\"\"doc\"\"\"\n\nVITRUVIAN_COURIER_VERSION = \"0.3.0\"  # x-release-please-version\n";
 
     fn env(pairs: &[(&str, &str)]) -> BTreeMap<String, String> {
         pairs
@@ -508,19 +518,26 @@ mod tests {
 
     #[test]
     fn tag_gives_the_version() {
-        assert_eq!(version_from_tag("courier-v1.2.3").unwrap(), "1.2.3");
-        assert_eq!(version_from_tag("courier-v0.10.0").unwrap(), "0.10.0");
+        assert_eq!(
+            version_from_tag("vitruvian-courier-v1.2.3").unwrap(),
+            "1.2.3"
+        );
+        assert_eq!(
+            version_from_tag("vitruvian-courier-v0.10.0").unwrap(),
+            "0.10.0"
+        );
     }
 
     #[test]
     fn other_tags_are_refused() {
         for bad in [
             "v1.2.3",
-            "home-speaker-v1.2.3",
-            "courier-v1.2",
-            "courier-v1.2.x",
-            "courier-v",
-            "courier-v1.2.3-beta",
+            "vitruvian-speaker-v1.2.3",
+            "courier-v1.2.3",
+            "vitruvian-courier-v1.2",
+            "vitruvian-courier-v1.2.x",
+            "vitruvian-courier-v",
+            "vitruvian-courier-v1.2.3-beta",
         ] {
             assert!(version_from_tag(bad).is_err(), "{bad} was accepted");
         }
@@ -564,23 +581,26 @@ mod tests {
         let mut e = env(&telegram());
         let err = resolve_plan(&[], &e, BZL).unwrap_err();
         assert!(err.contains("RELEASE_TAG"), "{err}");
-        e.insert("RELEASE_TAG".into(), "courier-v0.3.0".into());
+        e.insert("RELEASE_TAG".into(), "vitruvian-courier-v0.3.0".into());
         let p = resolve_plan(&[], &e, BZL).unwrap();
         assert!(!p.dry_run);
-        assert_eq!(p.tag, "courier-v0.3.0");
+        assert_eq!(p.tag, "vitruvian-courier-v0.3.0");
     }
 
     #[test]
     fn tag_is_read_from_tag_too() {
         let mut e = env(&telegram());
-        e.insert("TAG".into(), "courier-v0.3.0".into());
-        assert_eq!(resolve_plan(&[], &e, BZL).unwrap().tag, "courier-v0.3.0");
+        e.insert("TAG".into(), "vitruvian-courier-v0.3.0".into());
+        assert_eq!(
+            resolve_plan(&[], &e, BZL).unwrap().tag,
+            "vitruvian-courier-v0.3.0"
+        );
     }
 
     #[test]
     fn a_tag_that_does_not_match_version_bzl_is_refused() {
         let mut e = env(&telegram());
-        e.insert("RELEASE_TAG".into(), "courier-v0.4.0".into());
+        e.insert("RELEASE_TAG".into(), "vitruvian-courier-v0.4.0".into());
         let err = resolve_plan(&[], &e, BZL).unwrap_err();
         assert!(err.contains("0.4.0") && err.contains("0.3.0"), "{err}");
         // A dry run of a tag is held to the same rule.
@@ -592,7 +612,7 @@ mod tests {
     fn a_real_release_without_the_telegram_app_id_is_refused() {
         for drop in [TELEGRAM_ID, TELEGRAM_HASH] {
             let mut e = env(&telegram());
-            e.insert("RELEASE_TAG".into(), "courier-v0.3.0".into());
+            e.insert("RELEASE_TAG".into(), "vitruvian-courier-v0.3.0".into());
             e.remove(drop);
             let err = resolve_plan(&[], &e, BZL).unwrap_err();
             assert!(
@@ -606,14 +626,14 @@ mod tests {
     fn a_real_release_that_cannot_be_notarised_is_refused() {
         for drop in ["NOTARY_KEY_ID", "NOTARY_ISSUER_ID", "NOTARY_API_KEY_P8"] {
             let mut e = env(&telegram());
-            e.insert("RELEASE_TAG".into(), "courier-v0.3.0".into());
+            e.insert("RELEASE_TAG".into(), "vitruvian-courier-v0.3.0".into());
             e.remove(drop);
             let err = resolve_plan(&[], &e, BZL).unwrap_err();
             assert!(err.contains("notarised"), "without {drop}: {err}");
         }
         // A key file stands in for the key itself, as it does for package-desktop.
         let mut e = env(&telegram());
-        e.insert("RELEASE_TAG".into(), "courier-v0.3.0".into());
+        e.insert("RELEASE_TAG".into(), "vitruvian-courier-v0.3.0".into());
         e.remove("NOTARY_API_KEY_P8");
         e.insert("NOTARY_KEY_FILE".into(), "/k/AuthKey.p8".into());
         assert!(resolve_plan(&[], &e, BZL).is_ok());
@@ -643,20 +663,20 @@ mod tests {
 
     #[test]
     fn injector_may_go_without_the_app_id_only_in_a_dry_run() {
-        let ent = Path::new("/e/Courier.entitlements");
-        let app = Path::new("/d/Courier.app");
+        let ent = Path::new("/e/VitruvianCourier.entitlements");
+        let app = Path::new("/d/Vitruvian Courier.app");
         let dry = resolve_plan(&["--dry-run".to_string()], &env(&[]), BZL).unwrap();
         assert_eq!(
             injector_args(&dry, ent, app),
             vec![
                 "--allow-missing",
                 "--entitlements",
-                "/e/Courier.entitlements",
-                "/d/Courier.app"
+                "/e/VitruvianCourier.entitlements",
+                "/d/Vitruvian Courier.app"
             ]
         );
         let mut e = env(&telegram());
-        e.insert("RELEASE_TAG".into(), "courier-v0.3.0".into());
+        e.insert("RELEASE_TAG".into(), "vitruvian-courier-v0.3.0".into());
         let real = resolve_plan(&[], &e, BZL).unwrap();
         assert!(!injector_args(&real, ent, app).contains(&"--allow-missing".to_string()));
     }
@@ -664,26 +684,26 @@ mod tests {
     #[test]
     fn package_desktop_gets_the_entitlements_cask_and_tag() {
         let mut e = env(&telegram());
-        e.insert("RELEASE_TAG".into(), "courier-v0.3.0".into());
+        e.insert("RELEASE_TAG".into(), "vitruvian-courier-v0.3.0".into());
         let real = resolve_plan(&[], &e, BZL).unwrap();
         let a = package_args(
             &real,
-            Path::new("/d/Courier.app"),
+            Path::new("/d/Vitruvian Courier.app"),
             Path::new("/e/C.ent"),
             Path::new("/d"),
         );
         let joined = a.join(" ");
-        assert!(joined.contains("--app-name Courier"));
-        assert!(joined.contains("--cask-name courier"));
+        assert!(joined.contains("--app-name Vitruvian Courier"));
+        assert!(joined.contains("--cask-name vitruvian-courier"));
         assert!(joined.contains("--entitlements /e/C.ent"));
-        assert!(joined.contains("--tag courier-v0.3.0"));
+        assert!(joined.contains("--tag vitruvian-courier-v0.3.0"));
         assert!(!joined.contains("--dry-run"));
         assert!(!joined.to_lowercase().contains("beeper"));
 
         let dry = resolve_plan(&["--dry-run".to_string()], &env(&[]), BZL).unwrap();
         let a = package_args(
             &dry,
-            Path::new("/d/Courier.app"),
+            Path::new("/d/Vitruvian Courier.app"),
             Path::new("/e/C.ent"),
             Path::new("/d"),
         );
@@ -695,13 +715,13 @@ mod tests {
     fn expected_files_cover_every_dmg_zip_checksum_and_the_cask() {
         let f = expected_dist_files("0.3.0");
         for name in [
-            "Courier-0.3.0-universal.dmg",
-            "Courier-0.3.0-universal.dmg.sha256",
-            "Courier-0.3.0.dmg",
-            "Courier-0.3.0-arm64.dmg.sha256",
-            "Courier-0.3.0-x86_64.dmg",
-            "Courier-0.3.0-universal.zip.sha256",
-            "courier.rb",
+            "VitruvianCourier-0.3.0-universal.dmg",
+            "VitruvianCourier-0.3.0-universal.dmg.sha256",
+            "VitruvianCourier-0.3.0.dmg",
+            "VitruvianCourier-0.3.0-arm64.dmg.sha256",
+            "VitruvianCourier-0.3.0-x86_64.dmg",
+            "VitruvianCourier-0.3.0-universal.zip.sha256",
+            "vitruvian-courier.rb",
         ] {
             assert!(f.contains(&name.to_string()), "{name} is not expected");
         }
@@ -710,20 +730,23 @@ mod tests {
 
     #[test]
     fn missing_and_empty_files_are_named() {
-        let dir = std::env::temp_dir().join(format!("courier-publish-test-{}", std::process::id()));
+        let dir = std::env::temp_dir().join(format!(
+            "vitruvian-courier-publish-test-{}",
+            std::process::id()
+        ));
         let _ = fs::remove_dir_all(&dir);
         fs::create_dir_all(&dir).unwrap();
         for f in expected_dist_files("0.3.0") {
             fs::write(dir.join(&f), b"x").unwrap();
         }
         assert!(missing_from_dist(&dir, "0.3.0").is_empty());
-        fs::write(dir.join("Courier-0.3.0-arm64.dmg"), b"").unwrap();
-        fs::remove_file(dir.join("courier.rb")).unwrap();
+        fs::write(dir.join("VitruvianCourier-0.3.0-arm64.dmg"), b"").unwrap();
+        fs::remove_file(dir.join("vitruvian-courier.rb")).unwrap();
         assert_eq!(
             missing_from_dist(&dir, "0.3.0"),
             vec![
-                "Courier-0.3.0-arm64.dmg".to_string(),
-                "courier.rb".to_string()
+                "VitruvianCourier-0.3.0-arm64.dmg".to_string(),
+                "vitruvian-courier.rb".to_string()
             ]
         );
         let _ = fs::remove_dir_all(&dir);
@@ -732,10 +755,15 @@ mod tests {
     #[test]
     fn the_archive_is_found_in_cquery_output() {
         assert_eq!(
-            archive_from_cquery("bazel-out/x/bin/apps/desktop/courier/app/Courier.zip\n")
-                .as_deref(),
-            Some("bazel-out/x/bin/apps/desktop/courier/app/Courier.zip")
+            archive_from_cquery(
+                "bazel-out/x/bin/apps/desktop/vitruvian-courier/app/VitruvianCourier.zip\n"
+            )
+            .as_deref(),
+            Some("bazel-out/x/bin/apps/desktop/vitruvian-courier/app/VitruvianCourier.zip")
         );
-        assert_eq!(archive_from_cquery("bazel-out/x/Courier.app\n"), None);
+        assert_eq!(
+            archive_from_cquery("bazel-out/x/Vitruvian Courier.app\n"),
+            None
+        );
     }
 }

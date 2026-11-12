@@ -22,39 +22,39 @@ func TestScrubStderrExport(t *testing.T) {
 		`{"level":"warn","broken_json":`,
 		`{"msg":"unreadable log line dropped"}`,
 		`arbitrary debug print from library with phone +14155550199 and token xoxc-123-456`,
-		`courier-engine: open /Users/alice/Library/Application Support/Courier/courier.db: permission denied (token xoxc-123-456, phone +14155550199)`,
+		`vitruvian-courier-engine: open /Users/alice/Library/Application Support/Vitruvian Courier/courier.db: permission denied (token xoxc-123-456, phone +14155550199)`,
 		`panic: failed to parse "+14155550199: secret message" with token xoxc-123-456`,
 		`fatal error: concurrent map writes for +14155550199`,
 		``,
 		`goroutine 42 [running]:`,
 		`maunium.net/go/mautrix/bridgev2.(*Portal).handleRemoteEvent(0x1400012a000, {0x104c92a00, 0x14000180000})`,
 		"\t/Users/alice/go/pkg/mod/maunium.net/go/mautrix@v0.31.0/bridgev2/portal.go:2690 +0x1c4",
-		`github.com/VitruvianSoftware/courier/engine/internal/host.(*Host).Start(0x1400012a000, 0x14000999000)`,
-		"\t/Users/alice/Workspace/project/apps/desktop/courier/engine/internal/host/host.go:200 +0x88",
+		`github.com/VitruvianSoftware/vitruvian-courier/engine/internal/host.(*Host).Start(0x1400012a000, 0x14000999000)`,
+		"\t/Users/alice/Workspace/project/apps/desktop/vitruvian-courier/engine/internal/host/host.go:200 +0x88",
 		`created by maunium.net/go/mautrix/bridgev2.(*Bridge).StartLogins in goroutine 1`,
 		"\t/Users/alice/go/pkg/mod/maunium.net/go/mautrix@v0.31.0/bridgev2/bridge.go:366 +0x40",
 		`goroutine 1 [chan receive]:`,
 		`main.run({0x1400012a000, 0x24}, {0x104c8a2e0, 0x14000010018})`,
-		"\t/Users/alice/Workspace/project/apps/desktop/courier/engine/cmd/courier-engine/main.go:205",
+		"\t/Users/alice/Workspace/project/apps/desktop/vitruvian-courier/engine/cmd/vitruvian-courier-engine/main.go:205",
 		`random trailing line with secret +14155550199`,
 	}, "\n")
 
 	got := ScrubStderrExport(dump)
 	want := []string{
 		`{"level":"warn","bridge":"whatsapp","time":"2026-10-25T12:00:00Z","message":"syncing [id] with [id]"}`,
-		`courier-engine: open ~/Library/Application Support/Courier/courier.db: permission denied (token [id], phone [id])`,
+		`vitruvian-courier-engine: open ~/Library/Application Support/Vitruvian Courier/courier.db: permission denied (token [id], phone [id])`,
 		`panic: [redacted]`,
 		`fatal error: [redacted]`,
 		`goroutine 42 [running]:`,
 		`maunium.net/go/mautrix/bridgev2.(*Portal).handleRemoteEvent(...)`,
 		"\tmaunium.net/go/mautrix@v0.31.0/bridgev2/portal.go:2690 +0x1c4",
-		`github.com/VitruvianSoftware/courier/engine/internal/host.(*Host).Start(...)`,
-		"\tgithub.com/VitruvianSoftware/courier/engine/internal/host/host.go:200 +0x88",
+		`github.com/VitruvianSoftware/vitruvian-courier/engine/internal/host.(*Host).Start(...)`,
+		"\tgithub.com/VitruvianSoftware/vitruvian-courier/engine/internal/host/host.go:200 +0x88",
 		`created by maunium.net/go/mautrix/bridgev2.(*Bridge).StartLogins in goroutine 1`,
 		"\tmaunium.net/go/mautrix@v0.31.0/bridgev2/bridge.go:366 +0x40",
 		`goroutine 1 [chan receive]:`,
 		`main.run(...)`,
-		"\tgithub.com/VitruvianSoftware/courier/engine/cmd/courier-engine/main.go:205",
+		"\tgithub.com/VitruvianSoftware/vitruvian-courier/engine/cmd/vitruvian-courier-engine/main.go:205",
 	}
 	require.Equal(t, want, got)
 
@@ -77,8 +77,8 @@ func TestScrubStderrExport(t *testing.T) {
 func TestScrubPathAndStartupError(t *testing.T) {
 	require.Equal(
 		t,
-		"open ~/Library/Application Support/Courier/courier.db: token [id] for [id]",
-		ScrubPath("open /Users/alice/Library/Application Support/Courier/courier.db: token xoxc-123-456 for +14155550199"),
+		"open ~/Library/Application Support/Vitruvian Courier/courier.db: token [id] for [id]",
+		ScrubPath("open /Users/alice/Library/Application Support/Vitruvian Courier/courier.db: token xoxc-123-456 for +14155550199"),
 	)
 	require.Equal(
 		t,
@@ -87,13 +87,13 @@ func TestScrubPathAndStartupError(t *testing.T) {
 	)
 	require.Equal(
 		t,
-		"courier-engine: cannot open ~/Library/Application Support/Courier: [id]",
-		ScrubStartupError("courier-engine:", errors.New("cannot open /Users/alice/Library/Application Support/Courier: +14155550199")),
+		"vitruvian-courier-engine: cannot open ~/Library/Application Support/Vitruvian Courier: [id]",
+		ScrubStartupError("vitruvian-courier-engine:", errors.New("cannot open /Users/alice/Library/Application Support/Vitruvian Courier: +14155550199")),
 	)
 	require.Equal(
 		t,
-		"error: cannot open ~/Library/Application Support/Courier-m1: [id]",
-		ScrubStartupError("error:", errors.New("cannot open /Users/alice/Library/Application Support/Courier-m1: xoxc-123-456")),
+		"error: cannot open ~/Library/Application Support/Vitruvian Courier-m1: [id]",
+		ScrubStartupError("error:", errors.New("cannot open /Users/alice/Library/Application Support/Vitruvian Courier-m1: xoxc-123-456")),
 	)
 }
 
@@ -133,8 +133,8 @@ func TestScrubPathReplacesUserHomeDirAndRealpath(t *testing.T) {
 	t.Setenv("HOME", "/Volumes/Data/alice-example")
 	require.Equal(
 		t,
-		"open ~/Library/Application Support/Courier/courier.db: permission denied",
-		ScrubPath("open /Volumes/Data/alice-example/Library/Application Support/Courier/courier.db: permission denied"),
+		"open ~/Library/Application Support/Vitruvian Courier/courier.db: permission denied",
+		ScrubPath("open /Volumes/Data/alice-example/Library/Application Support/Vitruvian Courier/courier.db: permission denied"),
 	)
 	require.Equal(
 		t,
@@ -154,13 +154,13 @@ func TestScrubPathReplacesUserHomeDirAndRealpath(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(
 		t,
-		"open ~/Library/Courier/courier.db",
-		ScrubPath("open "+resolvedReal+"/Library/Courier/courier.db"),
+		"open ~/Library/Vitruvian Courier/courier.db",
+		ScrubPath("open "+resolvedReal+"/Library/Vitruvian Courier/courier.db"),
 	)
 	require.Equal(
 		t,
-		"open ~/Library/Courier/courier.db",
-		ScrubPath("open "+linkHome+"/Library/Courier/courier.db"),
+		"open ~/Library/Vitruvian Courier/courier.db",
+		ScrubPath("open "+linkHome+"/Library/Vitruvian Courier/courier.db"),
 	)
 }
 
@@ -231,8 +231,8 @@ func TestScrubStderrExportPreservesRealPanicAndGenericFrames(t *testing.T) {
 	require.Contains(t, realStack, "panic(")
 
 	dump := "panic: +14155550199 secret panic payload\n\n" + realStack +
-		"\ngithub.com/VitruvianSoftware/courier/engine/internal/logscrub.instantiated[go.shape.int,int](0x14000123456)\n" +
-		"\t/Users/alice/Workspace/project/apps/desktop/courier/engine/internal/logscrub/stack_test.go:180 +0x20\n"
+		"\ngithub.com/VitruvianSoftware/vitruvian-courier/engine/internal/logscrub.instantiated[go.shape.int,int](0x14000123456)\n" +
+		"\t/Users/alice/Workspace/project/apps/desktop/vitruvian-courier/engine/internal/logscrub/stack_test.go:180 +0x20\n"
 
 	scrubbed := ScrubStderrExport(dump)
 	joined := strings.Join(scrubbed, "\n")
@@ -248,7 +248,7 @@ func TestScrubStderrExportPreservesRealPanicAndGenericFrames(t *testing.T) {
 
 func sharedCasesPath(t testing.TB) string {
 	t.Helper()
-	const rel = "apps/desktop/courier/protocol/logscrub/cases.json"
+	const rel = "apps/desktop/vitruvian-courier/protocol/logscrub/cases.json"
 	var tried []string
 	if srcdir := os.Getenv("TEST_SRCDIR"); srcdir != "" {
 		ws := os.Getenv("TEST_WORKSPACE")

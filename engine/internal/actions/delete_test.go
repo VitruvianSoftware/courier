@@ -13,8 +13,8 @@ import (
 	"github.com/stretchr/testify/require"
 	"maunium.net/go/mautrix/event"
 
-	"github.com/VitruvianSoftware/courier/engine/internal/fakenet"
-	"github.com/VitruvianSoftware/courier/engine/internal/store"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/fakenet"
+	"github.com/VitruvianSoftware/vitruvian-courier/engine/internal/store"
 )
 
 func (w world) redacted(t *testing.T, eventID string) bool {
@@ -98,7 +98,7 @@ func TestUnsendMyReaction(t *testing.T) {
 	require.Empty(t, w.n.Removes, "a reaction isn't a message")
 }
 
-// Review Focus 1: Google Messages' bridge takes a redaction but only deletes from the phone, so Courier never
+// Review Focus 1: Google Messages' bridge takes a redaction but only deletes from the phone, so Vitruvian Courier never
 // offers it as an unsend: Delete for Me reaches the phone instead.
 func TestGoogleMessagesNeverUnsends(t *testing.T) {
 	ctx := context.Background()
